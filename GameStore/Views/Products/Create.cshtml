@@ -1,0 +1,114 @@
+﻿@model GameStore.Models.Product
+
+@{
+    ViewData["Title"] = "Create";
+    Html.AntiForgeryToken();
+}
+
+<h1>Create</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReleaseDate" class="control-label"></label>
+                <input asp-for="ReleaseDate" class="form-control" type="date" />
+                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Developer" class="control-label"></label>
+                <input asp-for="Developer" class="form-control" />
+                <span asp-validation-for="Developer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Publisher" class="control-label"></label>
+                <input asp-for="Publisher" class="form-control" />
+                <span asp-validation-for="Publisher" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Platforms" class="control-label"></label>
+                <select id="platformsSelect" class="form-control" multiple>
+                    @foreach (var platform in ViewBag.Platforms)
+                    {
+                        <option value="@platform.Value">@platform.Text</option>
+                    }
+                </select>
+                <input type="hidden" asp-for="Platforms" id="selectedPlatforms" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl" class="control-label"></label>
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GenreId" class="control-label"></label>
+                <select asp-for="GenreId" class="form-control">
+                    @foreach (var genre in ViewBag.Genres)
+                    {
+                        <option value="@genre.Value">@genre.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const platformsSelect = document.getElementById("platformsSelect");
+            const hiddenInput = document.getElementById("selectedPlatforms");
+
+            // Ініціалізація Choices.js
+            const choices = new Choices(platformsSelect, {
+                removeItemButton: true,  // Кнопка "x" на плиточках
+                maxItemCount: 10,        // Обмеження кількості вибраних платформ
+                searchEnabled: false,    // Вимкнути пошук
+                placeholderValue: "Оберіть платформи...",
+                itemSelectText: "",      // Вимкнути текст при виборі
+            });
+
+            // Оновлення прихованого поля перед відправкою форми
+            document.querySelector("form").addEventListener("submit", function () {
+                hiddenInput.value = Array.from(platformsSelect.selectedOptions).map(option => option.value).join(",");
+            });
+
+            // Завантаження вже вибраних платформ
+            const selectedPlatforms = "@Html.Raw(string.Join(",", Model?.Platforms ?? new List<Platform>()))";
+            if (selectedPlatforms) {
+                selectedPlatforms.split(",").forEach(value => {
+                    choices.setChoiceByValue(value.trim());
+                });
+            }
+        });
+    </script>
+}
