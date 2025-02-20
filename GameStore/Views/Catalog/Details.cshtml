@@ -1,0 +1,24 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Model.ImageUrl" class="img-fluid" alt="@Model.Title">
+        </div>
+        <div class="col-md-6">
+            <h2>@Model.Title</h2>
+            <p><strong>Жанр:</strong> @Model.Genre?.Name</p>
+            <p>@Model.Description</p>
+            <p><strong>Розробник:</strong> @Model.Developer</p>
+            <p><strong>Видавець:</strong> @Model.Publisher</p>
+            <p><strong>Платформи:</strong> @string.Join(", ", Model.Platforms.Select(p => p.ToString()))</p>
+            <p><strong>Дата виходу:</strong> @Model.ReleaseDate.ToShortDateString()</p>
+            <h4 class="text-primary">$@Model.Price</h4>
+            <a href="#" class="btn btn-success">Додати в кошик</a>
+        </div>
+    </div>
+</div>

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GameStore.Data;
 using GameStore.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text.Json;
 
 namespace GameStore.Controllers
 {
@@ -98,27 +100,33 @@ namespace GameStore.Controllers
             {
                 return NotFound();
             }
+
             ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name");
-            ViewData["Platforms"] = Enum.GetValues(typeof(Platform))
-                            .Cast<Platform>()
-                            .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
-                            .ToList();
-            product.Platforms = Request.Form["Platforms"].ToString()
-                     .Split(',')
-                     .Where(p => !string.IsNullOrEmpty(p))
-                     .Select(p => Enum.Parse<Platform>(p))
-                     .ToList();
+            ViewBag.Platforms = Enum.GetValues(typeof(Platform))
+                .Cast<Platform>()
+                .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
+                .ToList();
+
+            if (!string.IsNullOrEmpty(product.PlatformsSerialized))
+            {
+                product.Platforms = JsonSerializer.Deserialize<List<Platform>>(product.PlatformsSerialized) ?? new List<Platform>();
+            }
+            else
+            {
+                product.Platforms = new List<Platform>();
+            }
 
 
             return View(product);
         }
+
 
         // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,Platforms,ImageUrl,GenreId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl,GenreId")] Product product, string[] Platforms)
         {
             if (id != product.Id)
             {
@@ -127,6 +135,9 @@ namespace GameStore.Controllers
 
             if (ModelState.IsValid)
             {
+                product.Platforms = Platforms?.Select(p => Enum.Parse<Platform>(p)).ToList() ?? new List<Platform>();
+                product.PlatformsSerialized = JsonSerializer.Serialize(product.Platforms);
+
                 try
                 {
                     _context.Update(product);
@@ -145,19 +156,17 @@ namespace GameStore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+
             ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name");
-            ViewData["Platforms"] = Enum.GetValues(typeof(Platform))
-                            .Cast<Platform>()
-                            .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
-                            .ToList();
-            product.Platforms = Request.Form["Platforms"].ToString()
-                     .Split(',')
-                     .Where(p => !string.IsNullOrEmpty(p))
-                     .Select(p => Enum.Parse<Platform>(p))
-                     .ToList();
+            ViewBag.Platforms = Enum.GetValues(typeof(Platform))
+                .Cast<Platform>()
+                .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
+                .ToList();
 
             return View(product);
         }
+
 
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)

@@ -1,0 +1,36 @@
+﻿@model List<Product>
+
+@{
+    ViewData["Title"] = "Ваш кошик";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Ваш кошик</h2>
+
+    @if (Model.Count == 0)
+    {
+        <p class="text-center">Ваш кошик порожній.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Назва</th>
+                    <th>Ціна</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>$@item.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a href="@Url.Action("ClearCart", "Cart")" class="btn btn-danger">Очистити кошик</a>
+    }
+</div>
