@@ -64,28 +64,31 @@ namespace GameStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,Platforms,ImageUrl,GenreId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl,GenreId")] Product product, string[] Platforms)
         {
             if (ModelState.IsValid)
             {
+                product.Platforms = Platforms?
+                    .Where(p => !string.IsNullOrWhiteSpace(p))
+                    .Select(p => Enum.Parse<Platform>(p))
+                    .ToList() ?? new List<Platform>();
+
+                product.PlatformsSerialized = JsonSerializer.Serialize(product.Platforms);
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name");
-            ViewData["Platforms"] = Enum.GetValues(typeof(Platform))
-                            .Cast<Platform>()
-                            .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
-                            .ToList();
-            product.Platforms = Request.Form["Platforms"].ToString()
-                     .Split(',')
-                     .Where(p => !string.IsNullOrEmpty(p))
-                     .Select(p => Enum.Parse<Platform>(p))
-                     .ToList();
 
+            ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name");
+            ViewBag.Platforms = Enum.GetValues(typeof(Platform))
+                .Cast<Platform>()
+                .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
+                .ToList();
 
             return View(product);
         }
+
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -126,7 +129,7 @@ namespace GameStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl,GenreId")] Product product, string[] Platforms)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl,GenreId,PlatformsSerialized")] Product product, string[] Platforms)
         {
             if (id != product.Id)
             {
@@ -135,7 +138,11 @@ namespace GameStore.Controllers
 
             if (ModelState.IsValid)
             {
-                product.Platforms = Platforms?.Select(p => Enum.Parse<Platform>(p)).ToList() ?? new List<Platform>();
+                product.Platforms = Platforms?
+                    .Where(p => !string.IsNullOrWhiteSpace(p))
+                    .Select(p => Enum.Parse<Platform>(p))
+                    .ToList() ?? new List<Platform>();
+
                 product.PlatformsSerialized = JsonSerializer.Serialize(product.Platforms);
 
                 try
@@ -157,7 +164,6 @@ namespace GameStore.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-
             ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name");
             ViewBag.Platforms = Enum.GetValues(typeof(Platform))
                 .Cast<Platform>()
@@ -166,6 +172,7 @@ namespace GameStore.Controllers
 
             return View(product);
         }
+
 
 
         // GET: Products/Delete/5

@@ -20,6 +20,7 @@ namespace GameStore.Controllers
             return View(products);
         }
 
+        //[HttpGet("{id}")]
         public IActionResult Details(int id)
         {
             var product = _context.Products.Include(p => p.Genre).FirstOrDefault(p => p.Id == id);

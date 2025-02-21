@@ -1,8 +1,60 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Відеоігри, доповнення та не тільки!";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="row align-items-center text-center text-md-start">
+        <div class="col-md-6">
+            <h1 class="display-4 fw-bold">Ласкаво просимо до GameStore!</h1>
+            <p class="lead text-muted">Відкрийте для себе найкращі ігри на різні платформи.</p>
+            <a asp-controller="Catalog" asp-action="Index" class="btn btn-outline-dark btn-lg mt-3">
+                Переглянути каталог
+            </a>
+        </div>
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1604846887565-640d2f52d564?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid rounded shadow" alt="Gaming">
+        </div>
+    </div>
+
+    <section class="mt-5">
+        <h2 class="text-center mb-4">Популярні ігри</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://preview.redd.it/cyberpunk-2077-ultimate-edition-wallpaper-in-4k-v0-2o745sdstw1c1.png?width=3840&format=png&auto=webp&s=57a155dfa1ac66b00185d4a7cd6f24b28f3fedae" class="card-img-top" alt="Cyberpunk">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Cyberpunk 2077</h5>
+                        <p class="text-muted">Жанр: RPG</p>
+                        <a href="#" class="btn btn-outline-dark btn-lg mt-3">Детальніше</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://images8.alphacoders.com/118/1186452.jpg" class="card-img-top" alt="Elden Ring">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Elden Ring</h5>
+                        <p class="text-muted">Жанр: Action RPG</p>
+                        <a href="#" class="btn btn-outline-dark btn-lg mt-3">Детальніше</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://images.alphacoders.com/116/1168382.jpg" class="card-img-top" alt="Forza">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Forza Horizon 5</h5>
+                        <p class="text-muted">Жанр: Гонки</p>
+                        <a href="#" class="btn btn-outline-dark btn-lg mt-3">Детальніше</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-5 text-center mb-5">
+        <h2>Зв'яжіться з нами</h2>
+        <p class="text-muted">Маєте питання? Напишіть нам!</p>
+        <a href="mailto:support@gamestore.com" class="btn btn-dark btn-lg mt-3">Написати</a>
+    </section>
 </div>

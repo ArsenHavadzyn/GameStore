@@ -27,10 +27,10 @@
                 <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Home")">Головна</a></li>
                 <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Catalog")">Каталог</a></li>
                 <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "About")">Про нас</a></li>
-                <form class="d-flex">
+                <form class="d-flex" action="@Url.Action("Index", "Cart")">
                     <button class="btn btn-outline-dark" type="submit">
                         <i class="bi-cart-fill me-1"></i>
-                        Cart
+                        Кошик
                         <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                     </button>
                 </form>
@@ -38,3 +38,12 @@
         </div>
     </div>
 </nav>
+
+<header class="bg-dark py-5 container-fluid">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">@ViewData["Title"]</h1>
+            <p class="lead fw-normal text-white-50 mb-0">@ViewData["Message"]</p>
+        </div>
+    </div>
+</header>

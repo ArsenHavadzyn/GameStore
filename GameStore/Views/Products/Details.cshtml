@@ -1,7 +1,8 @@
 ﻿@model GameStore.Models.Product
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детальна інформація";
+    ViewData["Message"] = Model.Title;
 }
 
 <h1>Details</h1>
@@ -68,5 +69,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад до списку</a>
 </div>
