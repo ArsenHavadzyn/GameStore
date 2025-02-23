@@ -1,25 +1,40 @@
 ﻿@model Product
 
 @{
+    ViewBag.IsDetailsPage = true;
     ViewData["Title"] = Model.Title;
-    ViewData["Message"] = Model.Description;
+    ViewBag.CoverImageUrl = Model.CoverImageUrl ?? "";
 }
 
-<div class="container mt-5">
-    <div class="row">
+<div class="container my-5">
+    <div class="row d-flex align-items-center">
         <div class="col-md-6">
-            <img src="@Model.ImageUrl" class="img-fluid" alt="@Model.Title">
+            <img src="@Model.ImageUrl" class="img-fluid game-image" alt="@Model.Title">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 game-details">
             <h2>@Model.Title</h2>
+            <p class="text-muted">@Model.Description</p>
+
             <p><strong>Жанр:</strong> @Model.Genre?.Name</p>
-            <p>@Model.Description</p>
             <p><strong>Розробник:</strong> @Model.Developer</p>
             <p><strong>Видавець:</strong> @Model.Publisher</p>
-            <p><strong>Платформи:</strong> @string.Join(", ", Model.Platforms.Select(p => p.ToString()))</p>
             <p><strong>Дата виходу:</strong> @Model.ReleaseDate.ToShortDateString()</p>
-            <h4 class="text-primary">$@Model.Price</h4>
-            <a href="#" class="btn btn-success">Додати в кошик</a>
+
+            <p><strong>Платформи:</strong></p>
+            <div>
+                @foreach (var platform in Model.Platforms)
+                {
+                    <span class="platform-badge">@platform</span>
+                }
+            </div>
+
+            <h4 class="game-price my-3">$@Model.Price</h4>
+
+            <div class="mt-3">
+                <a href="#" class="btn btn-outline-dark btn-lg btn-custom">Додати в кошик</a>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-lg btn-custom">Назад</a>
+            </div>
         </div>
     </div>
 </div>
+

@@ -64,7 +64,7 @@ namespace GameStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl,GenreId")] Product product, string[] Platforms)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl, CoverImageUrl, GenreId")] Product product, string[] Platforms)
         {
             if (ModelState.IsValid)
             {
@@ -77,6 +77,14 @@ namespace GameStore.Controllers
 
                 _context.Add(product);
                 await _context.SaveChangesAsync();
+                Console.WriteLine($"Platforms received in request: {Platforms?.Length}");
+                if (Platforms != null)
+                {
+                    foreach (var platform in Platforms)
+                    {
+                        Console.WriteLine($"Platform: {platform}");
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
 
@@ -85,6 +93,8 @@ namespace GameStore.Controllers
                 .Cast<Platform>()
                 .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
                 .ToList();
+
+
 
             return View(product);
         }
@@ -129,7 +139,7 @@ namespace GameStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl,GenreId,PlatformsSerialized")] Product product, string[] Platforms)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl, CoverImageUrl, GenreId")] Product product, string[] Platforms)
         {
             if (id != product.Id)
             {
@@ -138,15 +148,33 @@ namespace GameStore.Controllers
 
             if (ModelState.IsValid)
             {
-                product.Platforms = Platforms?
-                    .Where(p => !string.IsNullOrWhiteSpace(p))
-                    .Select(p => Enum.Parse<Platform>(p))
-                    .ToList() ?? new List<Platform>();
-
-                product.PlatformsSerialized = JsonSerializer.Serialize(product.Platforms);
-
                 try
                 {
+                    // Переконатися, що передаються окремі значення, а не JSON
+                    if (Platforms != null && Platforms.Any())
+                    {
+                        product.Platforms = Platforms
+                            .Where(p => !string.IsNullOrWhiteSpace(p)) // Виключає порожні значення
+                            .Select(p =>
+                            {
+                                if (Enum.TryParse<Platform>(p.Trim(), out var platform))
+                                {
+                                    return platform;
+                                }
+                                return (Platform?)null; // Якщо не знайдено, повертаємо null
+                            })
+                            .Where(p => p.HasValue) // Відфільтровуємо недійсні значення
+                            .Select(p => p!.Value) // Розпаковуємо Nullable<Platform>
+                            .ToList();
+                    }
+                    else
+                    {
+                        product.Platforms = new List<Platform>();
+                    }
+
+                    // Оновлення серіалізованих платформ
+                    product.PlatformsSerialized = JsonSerializer.Serialize(product.Platforms);
+
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }

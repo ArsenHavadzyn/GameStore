@@ -2,12 +2,12 @@
 
 @{
     ViewData["Title"] = "Редагування товару";
-    ViewData["Message"] = "";
 }
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form asp-action="Edit">
+            <form asp-action="Edit" class="p-4 shadow rounded bg-light">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                 <div class="mb-3">
@@ -50,19 +50,24 @@
 
                 <div class="mb-3">
                     <label asp-for="Platforms" class="form-label fw-bold">Платформи</label>
-                    <select id="platformsSelect" class="form-control" multiple>
+                    <select id="platformsSelect" name="Platforms" class="form-control" multiple>
                         @foreach (var platform in ViewBag.Platforms)
                         {
                             <option value="@platform.Value">@platform.Text</option>
                         }
                     </select>
-                    <input type="hidden" asp-for="Platforms" id="selectedPlatforms" />
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="ImageUrl" class="form-label fw-bold">URL зображення</label>
                     <input asp-for="ImageUrl" class="form-control" />
                     <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CoverImageUrl" class="form-label fw-bold">URL обкладинки</label>
+                    <input asp-for="CoverImageUrl" class="form-control" />
+                    <span asp-validation-for="CoverImageUrl" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
@@ -81,7 +86,7 @@
             </form>
 
             <div class="my-5 text-center">
-                <a asp-action="Index" class="text-decoration-none">Назад до списку</a>
+                <a asp-action="Index" class="text-decoration-none link-dark">Назад до списку</a>
             </div>
         </div>
     </div>
@@ -98,7 +103,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const platformsSelect = document.getElementById("platformsSelect");
-            const hiddenInput = document.getElementById("selectedPlatforms");
 
             const choices = new Choices(platformsSelect, {
                 removeItemButton: true,
@@ -108,12 +112,6 @@
                 itemSelectText: "",
             });
 
-            document.querySelector("form").addEventListener("submit", function () {
-                hiddenInput.value = Array.from(platformsSelect.selectedOptions)
-                    .map(option => option.value)
-                    .join(",");
-            });
-
             const selectedPlatforms = "@Html.Raw(string.Join(",", Model?.Platforms ?? new List<Platform>()))";
             if (selectedPlatforms) {
                 selectedPlatforms.split(",").forEach(value => {
@@ -121,5 +119,6 @@
                 });
             }
         });
+
     </script>
 }

@@ -6,22 +6,74 @@
 }
 
 <div class="container px-4 px-lg-5 mt-5">
-    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    <form method="get" action="@Url.Action("Index", "Catalog")">
+        <div class="row mb-4">
+            <!-- Фільтр по жанру -->
+            <div class="col-md-3">
+                <label for="genre" class="form-label">Жанр</label>
+                <select class="form-select" name="genre" id="genre">
+                    <option value="">Усі</option>
+                    @foreach (var genre in ViewBag.Genres as List<string>)
+                    {
+                        <option value="@genre">@genre</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Фільтр по ціні -->
+            <div class="col-md-3">
+                <label for="price" class="form-label">Ціна</label>
+                <select class="form-select" name="price" id="price">
+                    <option value="">Усі</option>
+                    <option value="0-10">0 - 10</option>
+                    <option value="10-30">10 - 30</option>
+                    <option value="30-50">30 - 50</option>
+                    <option value="50-100">50 - 100</option>
+                    <option value="100+">100+</option>
+                </select>
+            </div>
+
+            <!-- Фільтр по видавцю -->
+            <div class="col-md-3">
+                <label for="publisher" class="form-label">Видавець</label>
+                <select class="form-select" name="publisher" id="publisher">
+                    <option value="">Усі</option>
+                    @foreach (var publisher in ViewBag.Publishers as List<string>)
+                    {
+                        <option value="@publisher">@publisher</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Фільтр по платформі -->
+            <div class="col-md-3">
+                <label for="platform" class="form-label">Платформа</label>
+                <select class="form-select" name="platform" id="platform">
+                    <option value="">Усі</option>
+                    @if (ViewBag.Platforms != null)
+                    {
+                        @foreach (var platform in ViewBag.Platforms as List<string>)
+                        {
+                            <option value="@platform">@platform</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-outline-dark">Застосувати фільтри</button>
+    </form>
+
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center mt-4">
         @foreach (var product in Model)
         {
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <img class="card-img-top" src="@product.ImageUrl" alt="@product.Title">
-                    <div class="card-body p-1">
-                        <div class="text-center" style="margin-top:15px">
-                            <h5 class="fw-bolder">@product.Title</h5>
-                            <p class="text-muted small mb-1">Жанр: @product.Genre?.Name</p>
-                            <p class="text-success">@(string.Join(", ", product.Platforms.Select(p => p.ToString())))</p>
-                            <p class="fw-bold small">Ціна: $@product.Price</p>
-                        </div>
-                    </div>
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">Детальніше</a></div>
+            <div class="col mb-4">
+                <div class="game-card" onclick="location.href='@Url.Action("Details", "Catalog", new { id = product.Id })'">
+                    <img src="@product.ImageUrl" alt="@product.Title">
+                    <div class="game-info">
+                        <h6 class="mb-1">@product.Title</h6>
+                        <p class="small mb-1">Жанр: @product.Genre?.Name</p>
+                        <p class="fw-bold small">Ціна: $@product.Price</p>
                     </div>
                 </div>
             </div>

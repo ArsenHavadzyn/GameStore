@@ -1,37 +1,34 @@
-﻿@* <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"> *@
-@*     <div class="container-fluid"> *@
-@*         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GameStore</a> *@
-@*         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" *@
-@*                 aria-expanded="false" aria-label="Toggle navigation"> *@
-@*             <span class="navbar-toggler-icon"></span> *@
-@*         </button> *@
-@*         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between"> *@
-@*             <ul class="navbar-nav flex-grow-1"> *@
-@*                 <li class="nav-item"> *@
-@*                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a> *@
-@*                 </li> *@
-@*                 <li class="nav-item"> *@
-@*                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
-@*                 </li> *@
-@*             </ul> *@
-@*             <partial name="_LoginPartial" /> *@
-@*         </div> *@
-@*     </div> *@
-@* </nav> *@
+﻿@{
+    var isDetailsPage = ViewBag.IsDetailsPage as bool? ?? false;
+    var coverImageUrl = ViewBag.CoverImageUrl as string ?? "";
+}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="@Url.Action("Index", "Home")">GameStore</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Home")">Головна</a></li>
-                <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Catalog")">Каталог</a></li>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="catalogDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Каталог
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="catalogDropdown">
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "Catalog")">Каталог</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "Collections", new { id = "dlc" })">Каталог DLC</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "Collections", new { id = "popular" })">Найпопулярніші ігри</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "Collections", new { id = "multiplayer" })">Багатокористувацькі ігри</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "Collections", new { id = "family" })">Сімейні ігри</a></li>
+                    </ul>
+                </li>
                 <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "About")">Про нас</a></li>
-                <form class="d-flex" action="@Url.Action("Index", "Cart")">
-                    <button class="btn btn-outline-dark" type="submit">
-                        <i class="bi-cart-fill me-1"></i>
+                <form class="d-flex" action="/Cart">
+                    <button class="btn btn-outline-light" type="submit">
+                        <i class="nav-item me-1"></i>
                         Кошик
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        <span class="badge bg-light text-black ms-1 rounded-pill">0</span>
                     </button>
                 </form>
             </ul>
@@ -39,11 +36,23 @@
     </div>
 </nav>
 
-<header class="bg-dark py-5 container-fluid">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">@ViewData["Title"]</h1>
-            <p class="lead fw-normal text-white-50 mb-0">@ViewData["Message"]</p>
+
+@if (isDetailsPage && !string.IsNullOrEmpty(coverImageUrl))
+{
+    <header class="game-cover-header" style="background-image: url('@coverImageUrl');">
+        <div class="overlay">
+            
         </div>
-    </div>
-</header>
+    </header>
+}
+else
+{
+    <header class="bg-dark py-5 container-fluid">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">@ViewData["Title"]</h1>
+                <p class="lead fw-normal text-white-50 mb-0">@ViewData["Message"]</p>
+            </div>
+        </div>
+    </header>
+}

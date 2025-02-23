@@ -41,6 +41,9 @@ namespace GameStore.Models
         [Display(Name = "Зображення (URL)")]
         public string ImageUrl { get; set; } = string.Empty;
 
+        [Display(Name = "Обкладинка (URL)")]
+        public string CoverImageUrl { get; set; } = string.Empty;
+
         [Display(Name = "Жанр")]
         public int GenreId { get; set; }
         public Genre? Genre { get; set; }
