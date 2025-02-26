@@ -1,0 +1,31 @@
+﻿@model List<ApplicationUser>
+
+@{
+    ViewData["Title"] = "Користувачі";
+}
+
+<table class="table">
+    <tr>
+        <th>Email</th>
+        <th>Ролі</th>
+        <th>Дії</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>
+                @if (ViewBag.UserRoles.ContainsKey(user.Id))
+                {
+                    @foreach (var role in ViewBag.UserRoles[user.Id])
+                    {
+                        <span class="badge bg-info">@role</span>
+                    }
+                }
+            </td>
+            <td>
+                <a asp-action="ManageRoles" asp-route-id="@user.Id" class="btn btn-primary">Редагувати ролі</a>
+            </td>
+        </tr>
+    }
+</table>

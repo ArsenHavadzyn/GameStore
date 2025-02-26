@@ -1,0 +1,10 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Особистий кабінет";
+}
+
+<p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Ім'я користувача:</strong> @Model.UserName</p>
+
+<a asp-action="Logout" class="btn btn-danger">Вийти</a>

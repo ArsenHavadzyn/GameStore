@@ -8,5 +8,20 @@ namespace GameStore.Controllers
         {
             return View();
         }
+
+        public IActionResult Guarantee()
+        {
+            return View();
+        }
+
+        public IActionResult Delivery()
+        {
+            return View();
+        }
+
+        public IActionResult FAQ()
+        {
+            return View();
+        }
     }
 }

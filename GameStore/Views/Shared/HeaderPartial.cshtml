@@ -1,48 +1,114 @@
-﻿@{
+﻿@using GameStore.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject ApplicationDbContext _context
+@{
     var isDetailsPage = ViewBag.IsDetailsPage as bool? ?? false;
     var coverImageUrl = ViewBag.CoverImageUrl as string ?? "";
+    ViewBag.Collections = _context.Collections.ToList();
 }
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="@Url.Action("Index", "Home")">GameStore</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
+
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="catalogDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="catalogDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
                         Каталог
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="catalogDropdown">
                         <li><a class="dropdown-item" href="@Url.Action("Index", "Catalog")">Каталог</a></li>
-                        <li><a class="dropdown-item" href="@Url.Action("Index", "Collections", new { id = "dlc" })">Каталог DLC</a></li>
-                        <li><a class="dropdown-item" href="@Url.Action("Index", "Collections", new { id = "popular" })">Найпопулярніші ігри</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("", "Catalog", new { id = "dlc" })">Каталог DLC</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Collection", "Catalog", new {id = "6"})">Найпопулярніші ігри</a></li>
                         <li><a class="dropdown-item" href="@Url.Action("Index", "Collections", new { id = "multiplayer" })">Багатокористувацькі ігри</a></li>
                         <li><a class="dropdown-item" href="@Url.Action("Index", "Collections", new { id = "family" })">Сімейні ігри</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "About")">Про нас</a></li>
-                <form class="d-flex" action="/Cart">
-                    <button class="btn btn-outline-light" type="submit">
-                        <i class="nav-item me-1"></i>
-                        Кошик
-                        <span class="badge bg-light text-black ms-1 rounded-pill">0</span>
-                    </button>
-                </form>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="collectionsDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Колекції
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="collectionsDropdown">
+                        @if (ViewBag.Collections != null)
+                        {
+                            @foreach (var collection in ViewBag.Collections as List<Collection>)
+                            {
+                                <li>
+                                    <a class="dropdown-item" href="@Url.Action("Collection", "Catalog", new { id = collection.Id })">
+                                        @collection.Name
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Про нас
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "About")">Про компанію</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Guarantee", "About")">Гарантія</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Delivery", "About")">Доставка</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("FAQ", "About")">Питання та відповіді</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var user = await UserManager.GetUserAsync(User);
+                    bool isAdmin = user != null && await UserManager.IsInRoleAsync(user, "Admin");
+
+                    if (isAdmin)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Admin" asp-action="Index">Панель адміністратора</a>
+                        </li>
+                    }
+
+                    <li class="nav-item">
+                        <form class="d-flex">
+                            <button class="btn btn-outline-light" type="submit">
+                                <i class="nav-item me-1"></i>
+                                Кошик
+                                <span class="badge bg-light text-black ms-1 rounded-pill">0</span>
+                            </button>
+                        </form>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Logout">Вийти</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Увійти</a>
+                    </li>
+                }
             </ul>
         </div>
     </div>
 </nav>
 
-
 @if (isDetailsPage && !string.IsNullOrEmpty(coverImageUrl))
 {
     <header class="game-cover-header" style="background-image: url('@coverImageUrl');">
-        <div class="overlay">
-            
-        </div>
+        <div class="overlay"></div>
     </header>
 }
 else

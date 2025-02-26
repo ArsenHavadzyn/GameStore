@@ -17,18 +17,15 @@ namespace GameStore.Controllers
         }
 
 
-        public IActionResult Index(string genre, string price, string publisher, string platform)
+        public async Task<IActionResult> IndexAsync(string genre, string price, string publisher, string platform)
         {
-            // Отримання списку ігор
             var products = _context.Products.AsQueryable();
 
-            // Фільтрація за жанром
             if (!string.IsNullOrEmpty(genre))
             {
                 products = products.Where(p => p.Genre.Name == genre);
             }
 
-            // Фільтрація за ціною
             if (!string.IsNullOrEmpty(price))
             {
                 var priceRange = price.Split('-');
@@ -44,13 +41,11 @@ namespace GameStore.Controllers
                 }
             }
 
-            // Фільтрація за видавцем
             if (!string.IsNullOrEmpty(publisher))
             {
                 products = products.Where(p => p.Publisher == publisher);
             }
 
-            // Фільтрація за платформою
             if (!string.IsNullOrEmpty(platform) && Enum.TryParse(typeof(Platform), platform, out var platformEnum))
             {
                 products = products.AsEnumerable()
@@ -59,10 +54,9 @@ namespace GameStore.Controllers
                     .AsQueryable();
             }
 
+            ViewData["Title"] = "Каталог ігор";
+            ViewData["Message"] = "Найкращі відеоігри саме для вас!";
 
-
-
-            // Отримання списку жанрів, видавців і платформ для фільтрів
             ViewBag.Genres = _context.Genres.Select(g => g.Name).ToList();
             ViewBag.Publishers = _context.Products.Select(p => p.Publisher).Distinct().ToList();
             ViewBag.Platforms = _context.Products
@@ -71,12 +65,12 @@ namespace GameStore.Controllers
                 .Distinct()
                 .Select(p => p.ToString())
                 .ToList();
+            ViewBag.Collections = await _context.Collections.ToListAsync();
 
             return View(products.ToList());
         }
 
 
-        //[HttpGet("{id}")]
         public IActionResult Details(int id)
         {
             var product = _context.Products.Include(p => p.Genre).FirstOrDefault(p => p.Id == id);
@@ -86,5 +80,30 @@ namespace GameStore.Controllers
             return View(product);
         }
 
+        public async Task<IActionResult> Collection(int id)
+        {
+            var collection = await _context.Collections
+                .Include(c => c.Products)
+                .ThenInclude(p => p.Genre)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (collection == null)
+                return NotFound();
+
+            ViewData["Title"] = $"{collection.Name}";
+            ViewData["Message"] = $"{collection.Description}";
+
+            ViewBag.Genres = _context.Genres.Select(g => g.Name).ToList();
+            ViewBag.Publishers = _context.Products.Select(p => p.Publisher).Distinct().ToList();
+            ViewBag.Platforms = _context.Products
+                .AsEnumerable()
+                .SelectMany(p => JsonSerializer.Deserialize<List<Platform>>(p.PlatformsSerialized) ?? new List<Platform>())
+                .Distinct()
+                .Select(p => p.ToString())
+                .ToList();
+            ViewBag.IsCollectionPage = true;
+
+            return View("Index", collection.Products.ToList());
+        }
     }
 }

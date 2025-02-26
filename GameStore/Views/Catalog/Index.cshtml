@@ -1,14 +1,12 @@
 ﻿@model List<Product>
-
 @{
-    ViewData["Title"] = "Каталог ігор";
-    ViewData["Message"] = "Найкращі відеоігри саме для вас!";
+    var IsCollectionPage = ViewBag.isCollectionPage as bool? ?? false;
 }
 
 <div class="container px-4 px-lg-5 mt-5">
+    @{ if (!IsCollectionPage) {
     <form method="get" action="@Url.Action("Index", "Catalog")">
         <div class="row mb-4">
-            <!-- Фільтр по жанру -->
             <div class="col-md-3">
                 <label for="genre" class="form-label">Жанр</label>
                 <select class="form-select" name="genre" id="genre">
@@ -20,7 +18,6 @@
                 </select>
             </div>
 
-            <!-- Фільтр по ціні -->
             <div class="col-md-3">
                 <label for="price" class="form-label">Ціна</label>
                 <select class="form-select" name="price" id="price">
@@ -33,7 +30,6 @@
                 </select>
             </div>
 
-            <!-- Фільтр по видавцю -->
             <div class="col-md-3">
                 <label for="publisher" class="form-label">Видавець</label>
                 <select class="form-select" name="publisher" id="publisher">
@@ -45,7 +41,6 @@
                 </select>
             </div>
 
-            <!-- Фільтр по платформі -->
             <div class="col-md-3">
                 <label for="platform" class="form-label">Платформа</label>
                 <select class="form-select" name="platform" id="platform">
@@ -63,6 +58,8 @@
 
         <button type="submit" class="btn btn-outline-dark">Застосувати фільтри</button>
     </form>
+    }
+    }
 
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center mt-4">
         @foreach (var product in Model)

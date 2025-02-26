@@ -5,9 +5,13 @@ using GameStore.Models;
 
 namespace GameStore.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : IdentityDbContext<IdentityUser>(options)
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
+        {
+        }
+
         public DbSet<Product> Products { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -17,6 +21,18 @@ namespace GameStore.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.TotalPrice)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<OrderItem>()
+                .Property(oi => oi.Price)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Price)
+                .HasPrecision(18, 2);
 
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Product)
