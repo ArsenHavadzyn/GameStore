@@ -1,6 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Відеоігри, доповнення та не тільки!";
-}
+﻿@model IEnumerable<Product>
 
 <div class="container mt-5">
     <div class="row align-items-center text-center text-md-start">
@@ -12,43 +10,33 @@
             </a>
         </div>
         <div class="col-md-6">
-            <img src="https://images.unsplash.com/photo-1604846887565-640d2f52d564?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid rounded shadow" alt="Gaming">
+            <img src="https://images.unsplash.com/photo-1604846887565-640d2f52d564?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                 class="img-fluid rounded shadow" alt="Gaming">
         </div>
     </div>
 
     <section class="mt-5">
         <h2 class="text-center mb-4">Популярні ігри</h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <img src="https://preview.redd.it/cyberpunk-2077-ultimate-edition-wallpaper-in-4k-v0-2o745sdstw1c1.png?width=3840&format=png&auto=webp&s=57a155dfa1ac66b00185d4a7cd6f24b28f3fedae" class="card-img-top" alt="Cyberpunk">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Cyberpunk 2077</h5>
-                        <p class="text-muted">Жанр: RPG</p>
-                        <a href="#" class="btn btn-outline-dark btn-lg mt-3">Детальніше</a>
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                @foreach (var game in Model)
+                {
+                    <div class="swiper-slide">
+                        <div class="card h-100 shadow-sm">
+                            <img src="@game.CoverImageUrl" class="card-img-top" alt="@game.Title">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">@game.Title</h5>
+                                <p class="text-muted">Жанр: @game.Genre</p>
+                                <a asp-controller="Catalog" asp-action="Details" asp-route-id="@game.Id"
+                                   class="btn btn-outline-dark btn-lg mt-3">Детальніше</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <img src="https://images8.alphacoders.com/118/1186452.jpg" class="card-img-top" alt="Elden Ring">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Elden Ring</h5>
-                        <p class="text-muted">Жанр: Action RPG</p>
-                        <a href="#" class="btn btn-outline-dark btn-lg mt-3">Детальніше</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <img src="https://images.alphacoders.com/116/1168382.jpg" class="card-img-top" alt="Forza">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Forza Horizon 5</h5>
-                        <p class="text-muted">Жанр: Гонки</p>
-                        <a href="#" class="btn btn-outline-dark btn-lg mt-3">Детальніше</a>
-                    </div>
-                </div>
-            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
     </section>
 
@@ -58,3 +46,34 @@
         <a href="mailto:support@gamestore.com" class="btn btn-dark btn-lg mt-3">Написати</a>
     </section>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var swiper = new Swiper(".mySwiper", {
+                loop: true,
+                slidesPerView: 1,
+                spaceBetween: 10,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                    }
+                }
+            });
+        });
+    </script>
+}

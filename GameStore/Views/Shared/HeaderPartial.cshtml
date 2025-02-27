@@ -72,31 +72,39 @@
                 {
                     var user = await UserManager.GetUserAsync(User);
                     bool isAdmin = user != null && await UserManager.IsInRoleAsync(user, "Admin");
-
-                    if (isAdmin)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Admin" asp-action="Index">Панель адміністратора</a>
-                        </li>
-                    }
-
+                    <li class="nav-item dropdown" style="margin-right:10px;s">
+                        <a class="btn btn-outline-light" href="#" id="accountDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Мій профіль
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                            <li>
+                                <a class="dropdown-item" asp-controller="Account" asp-action="PersonalCabinet">Особистий кабінет</a>
+                            </li>
+                            @if (isAdmin)
+                            {
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="Index">Панель адміністратора</a>
+                                </li>
+                            }
+                            <li>
+                                <a class="dropdown-item" asp-controller="Account" asp-action="Logout" method="post">Вийти</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
-                        <form class="d-flex">
-                            <button class="btn btn-outline-light" type="submit">
+                        <form class="d-flex" asp-controller="Cart" asp-action="Index">
+                            <button class="btn btn-light" type="submit">
                                 <i class="nav-item me-1"></i>
                                 Кошик
-                                <span class="badge bg-light text-black ms-1 rounded-pill">0</span>
+                                <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                             </button>
                         </form>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Account" asp-action="Logout">Вийти</a>
                     </li>
                 }
                 else
                 {
-                    <li class="nav-item">
+                    <li>
                         <a class="nav-link" asp-controller="Account" asp-action="Login">Увійти</a>
                     </li>
                 }

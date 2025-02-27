@@ -1,0 +1,36 @@
+﻿@model EditProfileViewModel
+
+@{
+    ViewData["Title"] = "Редагування профілю";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="EditProfile" method="post" enctype="multipart/form-data" class="p-4 shadow rounded bg-light">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label fw-bold">Повне ім'я:</label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-bold">Email:</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Нове фото профілю:</label>
+                    <input asp-for="ProfilePicture" class="form-control" type="file" />
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-outline-dark btn-lg">Зберегти зміни</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

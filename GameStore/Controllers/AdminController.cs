@@ -28,7 +28,7 @@ namespace GameStore.Controllers
                 userRoles[user.Id] = roles.ToList();
             }
 
-            ViewBag.UserRoles = userRoles; // Передаємо ролі у ViewBag
+            ViewBag.UserRoles = userRoles;
             return View(users);
         }
 
@@ -59,11 +59,10 @@ namespace GameStore.Controllers
 
             var currentRoles = await _userManager.GetRolesAsync(user);
 
-            // Якщо roles == null, то не змінюємо ролі (інакше користувач залишиться без ролей)
             if (roles == null) roles = new List<string>();
 
-            await _userManager.RemoveFromRolesAsync(user, currentRoles.Except(roles)); // Видаляємо ролі, яких немає в новому списку
-            await _userManager.AddToRolesAsync(user, roles.Except(currentRoles)); // Додаємо нові ролі, яких раніше не було
+            await _userManager.RemoveFromRolesAsync(user, currentRoles.Except(roles));
+            await _userManager.AddToRolesAsync(user, roles.Except(currentRoles));
 
             return RedirectToAction("Index");
         }
