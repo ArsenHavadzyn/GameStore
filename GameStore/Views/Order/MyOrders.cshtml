@@ -1,0 +1,50 @@
+﻿@model List<Order>
+@using GameStore.Extensions
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Мої замовлення</h2>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info text-center">
+            У вас ще немає замовлень.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered shadow-sm">
+                <thead class="table-dark">
+                    <tr class="text-center">
+                        <th>Номер замовлення</th>
+                        <th>Дата</th>
+                        <th>Сума</th>
+                        <th>Статус</th>
+                        <th>Товари</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr class="text-center align-middle">
+                            <td>@order.Id</td>
+                            <td>@order.OrderDate.ToString("dd.MM.yyyy")</td>
+                            <td><strong>@Html.FormatPrice(order.TotalPrice)</strong></td>
+                            <td>
+                                <span class="badge bg-primary">@order.Status</span>
+                            </td>
+                            <td>
+                                <ul class="list-unstyled text-start">
+                                    @foreach (var item in order.OrderItems)
+                                    {
+                                        <li>▪ @item.Product.Title — <strong>@item.Quantity</strong> шт.</li>
+                                    }
+                                </ul>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

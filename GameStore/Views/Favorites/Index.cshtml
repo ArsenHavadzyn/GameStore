@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Favorite>
+@{
+    ViewData["Title"] = "Ваші улюблені ігри";
+}
+
+<div class="row my-4">
+    @if (Model.Count() == 0)
+    {
+        <div class="alert alert-danger text-center">
+            У вас ще немає улюблених ігор.
+        </div>
+    }
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 my-4">
+            <div class="card h-100 shadow-sm">
+                <img src="@item.Product.CoverImageUrl" class="card-img-top" alt="@item.Product.Title" style="height: 200px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@item.Product.Title</h5>
+                    <a asp-controller="Cart" asp-action="AddToCart"
+                       asp-route-productId="@item.ProductId" class="btn btn-outline-success btn-lg mt-3 fav-item">
+                        🛒
+                    </a>
+                    <a asp-controller="Catalog" asp-action="Details"
+                       asp-route-id="@item.ProductId" class="btn btn-outline-dark btn-lg mt-3 fav-item">
+                        🛈
+                    </a>
+                    <a asp-controller="Favorites" asp-action="RemoveFromFavorites"
+                       asp-route-productId="@item.ProductId" class="btn btn-outline-danger btn-lg mt-3 fav-item">
+                        🗑️
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

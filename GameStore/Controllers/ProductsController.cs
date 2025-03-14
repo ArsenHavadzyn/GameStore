@@ -62,11 +62,9 @@ namespace GameStore.Controllers
         }
 
         // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl, CoverImageUrl, GenreId")] Product product, string[] Platforms)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl, CoverImageUrl, GenreId, IsDLC")] Product product, string[] Platforms)
         {
             if (ModelState.IsValid)
             {
@@ -80,6 +78,7 @@ namespace GameStore.Controllers
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 Console.WriteLine($"Platforms received in request: {Platforms?.Length}");
+
                 if (Platforms != null)
                 {
                     foreach (var platform in Platforms)
@@ -90,13 +89,11 @@ namespace GameStore.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name");
+            ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name", product.GenreId);
             ViewBag.Platforms = Enum.GetValues(typeof(Platform))
                 .Cast<Platform>()
                 .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
                 .ToList();
-
-
 
             return View(product);
         }
@@ -137,11 +134,9 @@ namespace GameStore.Controllers
 
 
         // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl, CoverImageUrl, GenreId")] Product product, string[] Platforms)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl, CoverImageUrl, GenreId, IsDLC")] Product product, string[] Platforms)
         {
             if (id != product.Id)
             {
@@ -152,21 +147,20 @@ namespace GameStore.Controllers
             {
                 try
                 {
-                    // Переконатися, що передаються окремі значення, а не JSON
                     if (Platforms != null && Platforms.Any())
                     {
                         product.Platforms = Platforms
-                            .Where(p => !string.IsNullOrWhiteSpace(p)) // Виключає порожні значення
+                            .Where(p => !string.IsNullOrWhiteSpace(p))
                             .Select(p =>
                             {
                                 if (Enum.TryParse<Platform>(p.Trim(), out var platform))
                                 {
                                     return platform;
                                 }
-                                return (Platform?)null; // Якщо не знайдено, повертаємо null
+                                return (Platform?)null;
                             })
-                            .Where(p => p.HasValue) // Відфільтровуємо недійсні значення
-                            .Select(p => p!.Value) // Розпаковуємо Nullable<Platform>
+                            .Where(p => p.HasValue)
+                            .Select(p => p!.Value)
                             .ToList();
                     }
                     else
@@ -174,7 +168,6 @@ namespace GameStore.Controllers
                         product.Platforms = new List<Platform>();
                     }
 
-                    // Оновлення серіалізованих платформ
                     product.PlatformsSerialized = JsonSerializer.Serialize(product.Platforms);
 
                     _context.Update(product);
@@ -194,7 +187,7 @@ namespace GameStore.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name");
+            ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name", product.GenreId);
             ViewBag.Platforms = Enum.GetValues(typeof(Platform))
                 .Cast<Platform>()
                 .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })

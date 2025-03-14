@@ -1,7 +1,9 @@
-﻿using GameStore.Models;
+﻿using GameStore.Data;
+using GameStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Controllers
 {
@@ -10,11 +12,13 @@ namespace GameStore.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _context;
 
-        public AdminController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AdminController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -40,13 +44,29 @@ namespace GameStore.Controllers
             var roles = _roleManager.Roles.ToList();
             var userRoles = await _userManager.GetRolesAsync(user);
 
+            var userOrders = _context.Orders
+                .Where(o => o.UserId == user.Id)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .ToList();
+
             var model = new ManageRolesViewModel
             {
                 UserId = user.Id,
                 Email = user.Email,
+                FullName = user.FullName,
+                RegistrationDate = user.RegistrationDate,
                 AvailableRoles = roles,
-                AssignedRoles = userRoles
+                AssignedRoles = userRoles,
+
+                Purchases = userOrders.Select(o => new UserPurchaseViewModel
+                {
+                    Date = o.OrderDate,
+                    Items = o.OrderItems.Select(oi => oi.Product.Title).ToList(),
+                    TotalAmount = o.TotalPrice
+                }).ToList()
             };
+
 
             return View(model);
         }

@@ -19,6 +19,7 @@
                 <th>Платформи</th>
                 <th>Зображення (URL)</th>
                 <th>Обкладинка (URL)</th>
+                <th>DLC?</th>
                 <th>Дії</th>
             </tr>
         </thead>
@@ -41,6 +42,7 @@
                     </td>
                     <td><a href="@item.ImageUrl" target="_blank">Посилання на картинку</a></td>
                     <td><a href="@item.CoverImageUrl" target="_blank">Посилання на обкладинку</a></td>
+                    <td>@(item.IsDLC ? "+" : "-")</td>
                     <td>
                         <div class="btn-group" role="group">
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">✏️</a>

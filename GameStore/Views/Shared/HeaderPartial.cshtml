@@ -11,8 +11,8 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
+        <img src="~/favicon/favicon-32x32 - white.png" class="mx-2" />
         <a class="navbar-brand" href="@Url.Action("Index", "Home")">GameStore</a>
-
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -27,10 +27,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="catalogDropdown">
                         <li><a class="dropdown-item" href="@Url.Action("Index", "Catalog")">Каталог</a></li>
-                        <li><a class="dropdown-item" href="@Url.Action("", "Catalog", new { id = "dlc" })">Каталог DLC</a></li>
-                        <li><a class="dropdown-item" href="@Url.Action("Collection", "Catalog", new {id = "6"})">Найпопулярніші ігри</a></li>
-                        <li><a class="dropdown-item" href="@Url.Action("Index", "Collections", new { id = "multiplayer" })">Багатокористувацькі ігри</a></li>
-                        <li><a class="dropdown-item" href="@Url.Action("Index", "Collections", new { id = "family" })">Сімейні ігри</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "DLC")">Каталог DLC</a></li>
                     </ul>
                 </li>
 
@@ -68,18 +65,40 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <form id="currency-form" method="post" asp-controller="Currency" asp-action="SetCurrency" class="d-flex align-items-center">
+                        <input type="hidden" name="returnUrl" value="@Context.Request.Path">
+                        <input type="hidden" name="currency" value="">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-light nav-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span id="selected-currency">Валюта</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><button type="button" class="dropdown-item currency-option" data-currency="USD">USD</button></li>
+                                <li><button type="button" class="dropdown-item currency-option" data-currency="EUR">EUR</button></li>
+                                <li><button type="button" class="dropdown-item currency-option" data-currency="UAH">UAH</button></li>
+                            </ul>
+                        </div>
+                    </form>
+                </li>
                 @if (SignInManager.IsSignedIn(User))
                 {
                     var user = await UserManager.GetUserAsync(User);
                     bool isAdmin = user != null && await UserManager.IsInRoleAsync(user, "Admin");
-                    <li class="nav-item dropdown" style="margin-right:10px;s">
-                        <a class="btn btn-outline-light" href="#" id="accountDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
+                    <li class="nav-item dropdown">
+                        <a class="btn btn-light fav-item" href="#" id="accountDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false" style="border-radius:0px;">
                             Мій профіль
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                        <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="accountDropdown" style="left: 50%; transform: translateX(-50%);">
                             <li>
                                 <a class="dropdown-item" asp-controller="Account" asp-action="PersonalCabinet">Особистий кабінет</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Favorites" asp-action="Index">Список улюблених</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Order" asp-action="MyOrders">Мої замовлення</a>
                             </li>
                             @if (isAdmin)
                             {
@@ -88,30 +107,71 @@
                                 </li>
                             }
                             <li>
-                                <a class="dropdown-item" asp-controller="Account" asp-action="Logout" method="post">Вийти</a>
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="dropdown-item">Вийти</button>
+                                </form>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <form class="d-flex" asp-controller="Cart" asp-action="Index">
-                            <button class="btn btn-light" type="submit">
-                                <i class="nav-item me-1"></i>
-                                Кошик
-                                <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                            </button>
-                        </form>
-                    </li>
+                    @await Component.InvokeAsync("Cart")
                 }
                 else
                 {
                     <li>
-                        <a class="nav-link" asp-controller="Account" asp-action="Login">Увійти</a>
+                        <a class="btn btn-outline-light fav-item nav-btn" style="border-bottom-left-radius:0px; border-top-left-radius:0px;" asp-controller="Account" asp-action="Login">Увійти</a>
                     </li>
                 }
             </ul>
         </div>
     </div>
 </nav>
+
+<style>
+    .dropdown-item:active {
+        background-color: #343a40 !important;
+        color: white !important;
+    }
+
+    .nav-btn {
+        border: 2px solid white;
+        background: transparent;
+        color: white;
+        font-weight: bold;
+        padding: 6px 16px;
+        cursor: pointer;
+    }
+
+        .nav-btn:hover {
+            background: white;
+            color: black;
+        }
+
+        .nav-btn::after {
+            display: none !important;
+        }
+
+    .btn-light.fav-item {
+        background-color: white;
+        color: black;
+        font-weight: bold;
+        border: 2px solid white;
+        transition: all 0.3s ease;
+    }
+
+        .btn-light.fav-item:hover {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-light.fav-item:active{
+            background-color: white !important;
+            color: black !important;
+            border: 2px solid white !important;
+            box-shadow: none !important;
+        }
+
+</style>
 
 @if (isDetailsPage && !string.IsNullOrEmpty(coverImageUrl))
 {
@@ -130,3 +190,12 @@ else
         </div>
     </header>
 }
+
+<script>
+    document.querySelectorAll('.currency-option').forEach(item => {
+        item.addEventListener('click', event => {
+            document.querySelector('input[name="currency"]').value = item.getAttribute('data-currency');
+            document.querySelector('#currency-form').submit();
+        });
+    });
+</script>

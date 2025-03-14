@@ -1,53 +1,75 @@
-﻿using GameStore.Data;
-using GameStore.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using GameStore.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameStore.Controllers
 {
     public class CartController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly CartService _cartService;
 
-        public CartController(ApplicationDbContext context)
+        public CartController(CartService cartService)
         {
-            _context = context;
+            _cartService = cartService;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
-            var cart = GetCart();
+            var cart = _cartService.GetCart();
             return View(cart);
         }
 
-        public IActionResult AddToCart(int id)
+        [Authorize]
+        public IActionResult AddToCart(int productId)
         {
-            var cart = GetCart();
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
-            if (product != null)
+            var cart = _cartService.GetCart();
+            if (cart.ContainsKey(productId))
+                cart[productId]++;
+            else
+                cart[productId] = 1;
+
+            _cartService.SaveCart(cart);
+            return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        public IActionResult RemoveOne(int productId)
+        {
+            var cart = _cartService.GetCart();
+            if (cart.ContainsKey(productId))
             {
-                cart.Add(product);
-                SaveCart(cart);
+                cart[productId]--;
+                if (cart[productId] <= 0) cart.Remove(productId);
             }
+            _cartService.SaveCart(cart);
             return RedirectToAction("Index");
         }
 
-        public IActionResult ClearCart()
+        [Authorize]
+        public IActionResult Remove(int productId)
         {
-            SaveCart(new List<Product>());
+            var cart = _cartService.GetCart();
+            cart.Remove(productId);
+            _cartService.SaveCart(cart);
             return RedirectToAction("Index");
         }
 
-        private List<Product> GetCart()
+        [Authorize]
+        public IActionResult Clear()
         {
-            var cartJson = HttpContext.Session.GetString("Cart");
-            return string.IsNullOrEmpty(cartJson) ? new List<Product>() : JsonSerializer.Deserialize<List<Product>>(cartJson);
+            _cartService.SaveCart(new Dictionary<int, int>());
+            return RedirectToAction("Index");
         }
 
-        private void SaveCart(List<Product> cart)
+        [Authorize]
+        public IActionResult Checkout()
         {
-            HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cart));
+            if (_cartService.IsCartEmpty())
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index", "Checkout");
         }
     }
 }

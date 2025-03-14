@@ -17,6 +17,7 @@ namespace GameStore.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Collection> Collections { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,9 +36,9 @@ namespace GameStore.Data
                 .HasPrecision(18, 2);
 
             modelBuilder.Entity<OrderItem>()
-                .HasOne(oi => oi.Product)
-                .WithMany()
-                .HasForeignKey(oi => oi.ProductId);
+                .Property(o => o.TotalPrice)
+                .HasColumnType("decimal(18,2)");
+
 
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)

@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Усе найкраще - для вас!";
+}
 
 <div class="container mt-5">
     <div class="row align-items-center text-center text-md-start">
@@ -26,7 +29,7 @@
                             <img src="@game.CoverImageUrl" class="card-img-top" alt="@game.Title">
                             <div class="card-body text-center">
                                 <h5 class="card-title">@game.Title</h5>
-                                <p class="text-muted">Жанр: @game.Genre</p>
+                                <p class="text-muted">Жанр: @game.Genre.Name</p>
                                 <a asp-controller="Catalog" asp-action="Details" asp-route-id="@game.Id"
                                    class="btn btn-outline-dark btn-lg mt-3">Детальніше</a>
                             </div>
@@ -34,27 +37,29 @@
                     </div>
                 }
             </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
         </div>
     </section>
 
     <section class="mt-5 text-center mb-5">
         <h2>Зв'яжіться з нами</h2>
         <p class="text-muted">Маєте питання? Напишіть нам!</p>
-        <a href="mailto:support@gamestore.com" class="btn btn-dark btn-lg mt-3">Написати</a>
+        <a asp-controller="Home" asp-action="Feedback" class="btn btn-dark btn-lg mt-3">Написати</a>
     </section>
 </div>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+            document.addEventListener("DOMContentLoaded", function () {
             var swiper = new Swiper(".mySwiper", {
                 loop: true,
-                slidesPerView: 1,
-                spaceBetween: 10,
+                slidesPerView: "auto",
+                spaceBetween: 30,
+                centeredSlides: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: true
+                },
                 navigation: {
                     nextEl: ".swiper-button-next",
                     prevEl: ".swiper-button-prev",

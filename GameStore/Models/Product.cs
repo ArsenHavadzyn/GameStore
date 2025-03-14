@@ -47,5 +47,8 @@ namespace GameStore.Models
         [Display(Name = "Жанр")]
         public int GenreId { get; set; }
         public Genre? Genre { get; set; }
+
+        [Display(Name = "Це DLC?")]
+        public bool IsDLC { get; set; }
     }
 }

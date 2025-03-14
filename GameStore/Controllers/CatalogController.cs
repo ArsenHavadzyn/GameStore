@@ -16,10 +16,14 @@ namespace GameStore.Controllers
             _context = context;
         }
 
-
-        public async Task<IActionResult> IndexAsync(string genre, string price, string publisher, string platform)
+        public async Task<IActionResult> IndexAsync(string searchQuery, string genre, string price, string publisher, string platform, string sortOrder)
         {
-            var products = _context.Products.AsQueryable();
+            var products = _context.Products.Include(p => p.Genre).Where(p => !p.IsDLC).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                products = products.Where(p => p.Title.Contains(searchQuery));
+            }
 
             if (!string.IsNullOrEmpty(genre))
             {
@@ -54,6 +58,17 @@ namespace GameStore.Controllers
                     .AsQueryable();
             }
 
+            products = sortOrder switch
+            {
+                "title_asc" => products.OrderBy(p => p.Title),
+                "title_desc" => products.OrderByDescending(p => p.Title),
+                "price_asc" => products.OrderBy(p => p.Price),
+                "price_desc" => products.OrderByDescending(p => p.Price),
+                "date_asc" => products.OrderBy(p => p.ReleaseDate),
+                "date_desc" => products.OrderByDescending(p => p.ReleaseDate),
+                _ => products
+            };
+
             ViewData["Title"] = "Каталог ігор";
             ViewData["Message"] = "Найкращі відеоігри саме для вас!";
 
@@ -69,8 +84,6 @@ namespace GameStore.Controllers
 
             return View(products.ToList());
         }
-
-
         public IActionResult Details(int id)
         {
             var product = _context.Products.Include(p => p.Genre).FirstOrDefault(p => p.Id == id);

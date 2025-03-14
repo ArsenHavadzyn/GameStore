@@ -1,4 +1,5 @@
 ﻿using GameStore.Models;
+using GameStore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,15 +13,19 @@ public class AccountController : Controller
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IWebHostEnvironment _hostEnvironment;
+    private readonly IEmailService _emailService;
 
     public AccountController(UserManager<ApplicationUser> userManager,
                              SignInManager<ApplicationUser> signInManager,
-                             RoleManager<IdentityRole> roleManager, IWebHostEnvironment hostEnvironment)
+                             RoleManager<IdentityRole> roleManager,
+                             IWebHostEnvironment hostEnvironment,
+                             IEmailService emailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _roleManager = roleManager;
         _hostEnvironment = hostEnvironment;
+        _emailService = emailService;
     }
 
     // GET: /Account/PersonalCabinet
@@ -123,8 +128,10 @@ public class AccountController : Controller
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var resetLink = Url.Action("ResetPassword", "Account", new { token, email = model.Email }, Request.Scheme);
 
-                // TODO: Надіслати email користувачу з цим посиланням
-                Console.WriteLine($"Посилання для скидання пароля: {resetLink}");
+                await _emailService.SendEmailAsync(model.Email, "Скидання пароля",
+                    $"Щоб скинути пароль, перейдіть за посиланням: <a href='{resetLink}'>Скинути пароль</a>");
+
+                return View("ForgotPasswordConfirmation");
             }
 
             return View("ForgotPasswordConfirmation");
@@ -133,20 +140,36 @@ public class AccountController : Controller
         return View(model);
     }
 
+
     public IActionResult ForgotPasswordConfirmation()
     {
         return View();
     }
 
+    [Authorize]
     [HttpGet]
-    public IActionResult ResetPassword(string token, string email)
+    public async Task<IActionResult> ResetPassword()
     {
-        if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
-            return BadRequest("Некоректний запит на скидання пароля");
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            return NotFound();
+        }
 
-        return View(new ResetPasswordViewModel { Token = token, Email = email });
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+        var model = new ResetPasswordViewModel
+        {
+            Email = user.Email,
+            Token = token
+        };
+
+        return View(model);
     }
 
+
+
+    [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
@@ -156,10 +179,10 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var user = await _userManager.FindByEmailAsync(model.Email);
+        var user = await _userManager.GetUserAsync(User);
         if (user == null)
         {
-            return RedirectToAction("ResetPasswordConfirmation");
+            return NotFound();
         }
 
         var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
@@ -175,6 +198,7 @@ public class AccountController : Controller
 
         return View(model);
     }
+
 
     [HttpGet]
     public IActionResult ResetPasswordConfirmation()
@@ -204,62 +228,77 @@ public class AccountController : Controller
             return NotFound();
         }
 
-        var model = new EditProfileViewModel
+        var model = new ApplicationUser
         {
             FullName = user.FullName,
             Email = user.Email,
-            ProfilePictureUrl = user.ProfilePictureUrl
+            ProfilePictureUrl = user.ProfilePictureUrl,
+            PhoneNumber = user.PhoneNumber,
+            Address = user.Address,
+            BirthDate = user.BirthDate,
+            Token = user.Token
         };
 
         return View(model);
     }
 
+
     [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditProfile(EditProfileViewModel model)
+    public async Task<IActionResult> EditProfile(ApplicationUser model)
     {
-        if (ModelState.IsValid)
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
 
-            user.FullName = model.FullName;
+        user.FullName = model.FullName;
+        user.PhoneNumber = model.PhoneNumber;
+        user.Address = model.Address;
+        user.BirthDate = model.BirthDate;
+
+        if (!string.IsNullOrEmpty(model.Email) && user.Email != model.Email)
+        {
             user.Email = model.Email;
+            user.UserName = model.Email;
+        }
 
-            if (model.ProfilePicture != null)
+        if (Request.Form.Files.Count > 0)
+        {
+            var file = Request.Form.Files[0];
+            if (file.Length > 0)
             {
                 var uploadsFolder = Path.Combine(_hostEnvironment.WebRootPath, "uploads");
                 Directory.CreateDirectory(uploadsFolder);
 
-                var fileName = $"{Guid.NewGuid()}_{model.ProfilePicture.FileName}";
+                var fileName = $"{Guid.NewGuid()}_{file.FileName}";
                 var filePath = Path.Combine(uploadsFolder, fileName);
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    await model.ProfilePicture.CopyToAsync(fileStream);
+                    await file.CopyToAsync(fileStream);
                 }
 
                 user.ProfilePictureUrl = $"/uploads/{fileName}";
             }
+        }
 
-            var result = await _userManager.UpdateAsync(user);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("PersonalCabinet");
-            }
+        var result = await _userManager.UpdateAsync(user);
+        if (result.Succeeded)
+        {
+            return RedirectToAction("PersonalCabinet");
+        }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error.Description);
-            }
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError("", error.Description);
         }
 
         return View(model);
     }
+
 
 
     public async Task<IActionResult> CreateAdmin()

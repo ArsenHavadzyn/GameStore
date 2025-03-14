@@ -1,0 +1,74 @@
+﻿@model FeedbackViewModel
+
+@{
+    ViewData["Title"] = "Зворотній зв'язок";
+    ViewData["Message"] = "Заповніть форму для надсилання вашого відгуку.";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            <form asp-controller="Feedback" asp-action="SubmitFeedback" method="post" class="p-4 shadow rounded bg-light">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-bold">Ваше ім'я</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-bold">Ваш email</label>
+                    <input asp-for="Email" type="email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Subject" class="form-label fw-bold">Тема</label>
+                    <input asp-for="Subject" class="form-control" />
+                    <span asp-validation-for="Subject" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Message" class="form-label fw-bold">Повідомлення</label>
+                    <input asp-for="Message" type="hidden" />
+                    <trix-editor input="Message" class="feedback-trix"></trix-editor>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-outline-dark btn-lg">Надіслати</button>
+                </div>
+            </form>
+
+            <div class="my-5 text-center">
+                <a href="/" class="text-decoration-none link-dark">Назад до головної</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        document.addEventListener("trix-action-invoke", function(event) {
+            if (event.actionName === "attachFiles") {
+                event.preventDefault();
+            }
+        });
+
+        document.addEventListener("trix-file-accept", function(event) {
+            event.preventDefault();
+            alert("Вставка файлів заборонена.");
+        });
+
+
+    </script>
+}

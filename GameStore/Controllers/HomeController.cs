@@ -21,7 +21,9 @@ namespace GameStore.Controllers
         {
             var popularCollection = _context.Collections
                 .Include(c => c.Products)
+                .ThenInclude(p => p.Genre)
                 .FirstOrDefault(c => c.Name == "Найпопулярніші ігри");
+
 
             var popularGames = popularCollection?.Products ?? new List<Product>();
 
@@ -30,6 +32,11 @@ namespace GameStore.Controllers
 
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Feedback()
         {
             return View();
         }

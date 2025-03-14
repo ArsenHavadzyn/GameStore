@@ -100,29 +100,23 @@
 
 .mySwiper {
     position: relative;
-    padding-bottom: 60px; /* Додає місце для пагінації */
-    overflow: visible;
+    padding-bottom: 60px;
+    overflow: hidden;
 }
 
-.swiper-button-prev, .swiper-button-next {
-    width: 50px;
-    height: 50px;
-    color: black;
-    top: 50%; /* Центруємо по вертикалі */
-    transform: translateY(-50%);
+.swiper-slide {
+    flex: 0 0 auto;
+    width: auto;
 }
 
-.swiper-button-prev {
-    left: -80px; /* Виносимо стрілку за межі контейнера */
+.fav-item {
+    border-width: 2px;
 }
 
-.swiper-button-next {
-    right: -80px; /* Виносимо стрілку за межі контейнера */
+.btn {
+    border-width: 2px;
 }
 
-.swiper-pagination {
-    position: absolute;
-    bottom: -20px; /* Опускаємо пагінацію нижче */
-    left: 50%;
-    transform: translateX(-50%);
+.feedback-trix {
+    height: 350px;
 }

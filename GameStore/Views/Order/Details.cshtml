@@ -1,0 +1,56 @@
+﻿@model GameStore.Models.Order
+@using GameStore.Extensions;
+
+@{
+    ViewData["Title"] = "Деталі замовлення";
+}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Деталі замовлення #@Model.Id</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Інформація про користувача</h5>
+            <hr />
+            <p><strong>Ім'я користувача:</strong> @Model.User.UserName</p>
+            <p><strong>Email:</strong> @Model.User.Email</p>
+            <p><strong>Дата замовлення:</strong> @Model.OrderDate.ToString("dd.MM.yyyy HH:mm")</p>
+            <p><strong>Статус:</strong> @Model.Status</p>
+        </div>
+    </div>
+
+    <h5 class="mb-3">Товари у замовленні</h5>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Назва</th>
+                <th>Кількість</th>
+                <th>Ціна</th>
+                <th>Сума</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.Product.Title</td>
+                    <td>@item.Quantity</td>
+                    <td>@Html.FormatPrice(item.Product.Price)</td>
+                    <td>@Html.FormatPrice(item.Quantity * item.Product.Price)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-end">
+        <h4><strong>Загальна сума: @Html.FormatPrice(Model.TotalPrice)</strong></h4>
+    </div>
+
+    <a asp-action="Index" class="btn btn-secondary mt-3">Повернутися до списку</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

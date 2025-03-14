@@ -82,6 +82,19 @@
                     </select>
                 </div>
 
+                <div class="mb-3">
+                    <label asp-for="IsDLC" class="form-label fw-bold">Це DLC?</label>
+                    <div class="form-check form-check-inline ms-5">
+                        <input asp-for="IsDLC" type="radio" class="form-check-input" id="isDlcYes" value="true" />
+                        <label class="form-check-label" for="isDlcYes">Так</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="IsDLC" type="radio" class="form-check-input" id="isDlcNo" value="false" />
+                        <label class="form-check-label" for="isDlcNo">Ні</label>
+                    </div>
+                    <span asp-validation-for="IsDLC" class="text-danger"></span>
+                </div>
+
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-outline-dark btn-lg">Зберегти</button>
                 </div>

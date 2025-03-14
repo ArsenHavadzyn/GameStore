@@ -1,37 +1,53 @@
-﻿@model List<Product>
+﻿@model Dictionary<int, int>
+@inject GameStore.Data.ApplicationDbContext _context
+@using GameStore.Extensions
 
-@{
-    ViewData["Title"] = "Ваш кошик";
-    ViewData["Message"] = "";
+@if (!Model.Any())
+{
+    ViewData["Title"] = "Ваш кошик порожній :(";
 }
+else
+{
+    ViewData["Title"] = "Ваш кошик 🛒";
+    var total = 0m;
+    <table class="table table-striped my-4">
+        <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Кількість</th>
+                <th>Ціна</th>
+                <th>Разом</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var product = _context.Products.Find(item.Key);
+                var subtotal = product.Price * item.Value;
+                total += subtotal;
 
-<div class="container mt-5">
-    <h2 class="text-center">Ваш кошик</h2>
-
-    @if (Model.Count == 0)
-    {
-        <p class="text-center">Ваш кошик порожній.</p>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
                 <tr>
-                    <th>Назва</th>
-                    <th>Ціна</th>
-                    <th></th>
+                    <td>@product.Title</td>
+                    <td>
+                        <a asp-action="RemoveOne" asp-route-productId="@item.Key" class="btn btn-sm btn-outline-secondary fav-item">➖</a>
+                        <strong>@item.Value</strong>
+                        <a asp-action="AddToCart" asp-route-productId="@item.Key" class="btn btn-sm btn-outline-secondary fav-item">➕</a>
+                    </td>
+                    <td>@Html.FormatPrice(product.Price)</td>
+                    <td>@subtotal$</td>
+                    <td>
+                        <a asp-action="Remove" asp-route-productId="@item.Key" class="btn btn-sm btn-outline-danger fav-item">🗑️ Видалити</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Title</td>
-                        <td>$@item.Price</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <a href="@Url.Action("ClearCart", "Cart")" class="btn btn-danger">Очистити кошик</a>
-    }
-</div>
+            }
+        </tbody>
+    </table>
+
+    <h4>Загальна сума: <strong>@total$</strong></h4>
+
+    <div class="my-4">
+        <a asp-action="Clear" class="btn btn-outline-warning fav-item">Очистити кошик</a>
+        <a asp-controller="Cart" asp-action="Checkout" class="btn btn-outline-success fav-item">Оформити замовлення</a>
+    </div>
+}

@@ -1,5 +1,5 @@
 ﻿@model GameStore.Models.Product
-
+@using GameStore.Extensions;
 @{
     ViewData["Title"] = "Детальна інформація";
 }
@@ -22,7 +22,7 @@
                                 <dd class="col-sm-8">@Model.Description</dd>
 
                                 <dt class="col-sm-4 text-muted">Ціна</dt>
-                                <dd class="col-sm-8">$@Model.Price</dd>
+                                <dd class="col-sm-8">@Html.FormatPrice(Model.Price)</dd>
 
                                 <dt class="col-sm-4 text-muted">Дата виходу</dt>
                                 <dd class="col-sm-8">@Model.ReleaseDate.ToShortDateString()</dd>
@@ -38,13 +38,16 @@
 
                                 <dt class="col-sm-4 text-muted">Жанр</dt>
                                 <dd class="col-sm-8">@Model.Genre.Name</dd>
+
+                                <dt class="col-sm-4 text-muted">DLC?</dt>
+                                <dd class="col-sm-8">@(Model.IsDLC ? "Так" : "Ні")</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-dark me-2">Редагувати</a>
-                    <a asp-action="Index" class="btn btn-secondary">Назад до списку</a>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-dark me-2 fav-item">Редагувати</a>
+                    <a asp-action="Index" class="btn btn-secondary fav-item">Назад до списку</a>
                 </div>
             </div>
         </div>

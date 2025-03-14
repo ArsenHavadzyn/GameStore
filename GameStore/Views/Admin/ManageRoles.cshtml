@@ -1,23 +1,76 @@
 ﻿@model ManageRolesViewModel
 
 @{
-    ViewData["Title"] = "Редагування ролей для " + @Model.Email;
+    ViewData["Title"] = "Редагування ролей для " + Model.Email;
 }
 
-<form asp-action="UpdateRoles" method="post">
-    <input type="hidden" name="userId" value="@Model.UserId" />
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="p-4 shadow rounded bg-light">
+                <h1 class="text-center mb-4">Редагування ролей для користувача: <strong>@Model.Email</strong></h1>
 
-    <div class="form-group">
-        <label>Ролі</label>
-        @foreach (var role in Model.AvailableRoles)
-        {
-            <div class="form-check">
-                <input type="checkbox" name="roles" value="@role.Name"
-                @(Model.AssignedRoles.Contains(role.Name) ? "checked" : "") />
-                <label>@role.Name</label>
+                <div class="mb-4">
+                    <h3 class="fw-bold">Інформація про користувача</h3>
+                    <p><strong>Ім'я:</strong> @Model.FullName</p>
+                    <p><strong>Електронна пошта:</strong> @Model.Email</p>
+                    <p><strong>Дата реєстрації:</strong> @Model.RegistrationDate.ToString("dd MMM yyyy")</p>
+                </div>
+
+                <div class="mb-4">
+                    <h3 class="fw-bold">Покупки користувача</h3>
+                    @if (Model.Purchases.Any())
+                    {
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Дата покупки</th>
+                                    <th>Товари</th>
+                                    <th>Сума</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var purchase in Model.Purchases)
+                                {
+                                    <tr>
+                                        <td>@purchase.Date.ToString("dd MMM yyyy")</td>
+                                        <td>@string.Join(", ", purchase.Items)</td>
+                                        <td>@purchase.TotalAmount.ToString("C")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>Цей користувач ще не здійснював покупок.</p>
+                    }
+                </div>
+
+                <form asp-action="UpdateRoles" method="post">
+                    <input type="hidden" name="userId" value="@Model.UserId" />
+
+                    <div class="form-group mb-4">
+                        <label class="fw-bold">Ролі користувача</label>
+                        @foreach (var role in Model.AvailableRoles)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="roles" value="@role.Name"
+                                @(Model.AssignedRoles.Contains(role.Name) ? "checked" : "") />
+                                <label class="form-check-label">@role.Name</label>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-outline-success btn-lg">Зберегти зміни</button>
+                    </div>
+                </form>
             </div>
-        }
-    </div>
 
-    <button type="submit" class="btn btn-success">Зберегти</button>
-</form>
+            <div class="my-5 text-center">
+                <a href="@Url.Action("Index", "Admin")" class="text-decoration-none link-dark">Назад до списку користувачів</a>
+            </div>
+        </div>
+    </div>
+</div>
