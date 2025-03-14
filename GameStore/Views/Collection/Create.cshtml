@@ -1,0 +1,70 @@
+﻿@model GameStore.Models.Collection
+
+@{
+    ViewData["Title"] = "Створення колекції";
+    ViewData["Message"] = "Заповніть усі поля для внесення запису";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Create" method="post" class="p-4 shadow rounded bg-light">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-bold">Назва колекції</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label fw-bold">Опис</label>
+                    <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="selectedGames" class="form-label fw-bold">Оберіть ігри</label>
+                    <select id="selectedGames" name="selectedGames[]" class="form-control" multiple>
+                        @foreach (var game in ViewBag.AllGames)
+                        {
+                            <option value="@game.Id">@game.Title</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-outline-dark btn-lg">Зберегти</button>
+                </div>
+            </form>
+
+            <div class="my-5 text-center">
+                <a asp-action="Index" class="text-decoration-none link-dark">Назад до списку</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const gamesSelect = document.getElementById("selectedGames");
+
+            new Choices(gamesSelect, {
+                removeItemButton: true,
+                maxItemCount: 20,
+                searchEnabled: true,
+                placeholderValue: "Оберіть ігри...",
+                itemSelectText: "",
+            });
+        });
+    </script>
+
+}

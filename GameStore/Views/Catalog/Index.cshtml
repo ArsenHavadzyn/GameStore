@@ -1,0 +1,177 @@
+﻿@model List<Product>
+@using GameStore.Extensions
+@{
+    var IsCollectionPage = ViewBag.isCollectionPage as bool? ?? false;
+}
+
+<div class="container px-4 px-lg-5 mt-5">
+    @if (!IsCollectionPage)
+    {
+        <div class="d-flex justify-content-center mb-4">
+            <button id="toggleSearch" class="btn btn-outline-dark mx-2">Пошук</button>
+            <button id="toggleFilters" class="btn btn-outline-dark me-2">Фільтри</button>
+            <button id="toggleSorting" class="btn btn-outline-dark me-2">Сортування</button>
+        </div>
+
+        <hr />
+
+        <div id="searchSection" class="search-box animate__animated animate__fadeIn d-none">
+            <form method="get" asp-controller="Catalog" asp-action="Index" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="searchQuery" class="form-control" placeholder="Пошук ігор..." value="@Context.Request.Query["searchQuery"]">
+                    <button type="submit" class="btn btn-dark">Шукати</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="filtersSection" class="filter-box animate__animated animate__fadeIn d-none">
+            <form method="get" action="@Url.Action("Index", "Catalog")">
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label for="genre" class="form-label">Жанр</label>
+                        <select class="form-select" name="genre" id="genre">
+                            <option value="">Усі</option>
+                            @foreach (var genre in ViewBag.Genres as List<string>)
+                            {
+                                <option value="@genre">@genre</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="price" class="form-label">Ціна у доларах</label>
+                        <select class="form-select" name="price" id="price">
+                            <option value="">Усі</option>
+                            <option value="0-10">0 - 10</option>
+                            <option value="10-30">10 - 30</option>
+                            <option value="30-50">30 - 50</option>
+                            <option value="50-100">50 - 100</option>
+                            <option value="100+">100+</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="publisher" class="form-label">Видавець</label>
+                        <select class="form-select" name="publisher" id="publisher">
+                            <option value="">Усі</option>
+                            @foreach (var publisher in ViewBag.Publishers as List<string>)
+                            {
+                                <option value="@publisher">@publisher</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="platform" class="form-label">Платформа</label>
+                        <select class="form-select" name="platform" id="platform">
+                            <option value="">Усі</option>
+                            @if (ViewBag.Platforms != null)
+                            {
+                                @foreach (var platform in ViewBag.Platforms as List<string>)
+                                {
+                                    <option value="@platform">@platform</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-dark">Застосувати фільтри</button>
+            </form>
+        </div>
+
+        <div id="sortingSection" class="sorting-box animate__animated animate__fadeIn d-none">
+            <form method="get" action="@Url.Action("Index", "Catalog")">
+                <div class="row mb-4">
+                    <div class="md-6">
+                        <label for="sortOrder" class="form-label">Сортувати за:</label>
+                        <select id="sortOrder" class="form-select" name="sortOrder">
+                            <option value="">За замовчуванням</option>
+                            <option value="title_asc">Назва (A-Z)</option>
+                            <option value="title_desc">Назва (Z-A)</option>
+                            <option value="price_asc">Ціна (дешевші)</option>
+                            <option value="price_desc">Ціна (дорожчі)</option>
+                            <option value="date_asc">Дата виходу (старіші)</option>
+                            <option value="date_desc">Дата виходу (новіші)</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-dark">Застосувати сортування</button>
+            </form>
+        </div>
+    }
+
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center mt-4">
+        @foreach (var product in Model)
+        {
+            <div class="col mb-4">
+                <div class="game-card" onclick="location.href='@Url.Action("Details", "Catalog", new { id = product.Id })'">
+                    <img src="@product.ImageUrl" alt="@product.Title">
+                    <div class="game-info">
+                        <h6 class="mb-1">@product.Title</h6>
+                        <p class="fw small">Жанр: @product.Genre.Name</p>
+                        <p class="fw-bold small">Ціна: @Html.FormatPrice(product.Price)</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleFilters = document.getElementById("toggleFilters");
+            const toggleSearch = document.getElementById("toggleSearch");
+            const toggleSorting = document.getElementById("toggleSorting");
+
+            const filtersSection = document.getElementById("filtersSection");
+            const searchSection = document.getElementById("searchSection");
+            const sortingSection = document.getElementById("sortingSection");
+
+            toggleFilters.addEventListener("click", function () {
+                filtersSection.classList.toggle("d-none");
+                searchSection.classList.add("d-none");
+                sortingSection.classList.add("d-none");
+                toggleFilters.classList.add("active");
+                toggleSearch.classList.remove("active");
+                toggleSorting.classList.remove("active");
+            });
+
+            toggleSearch.addEventListener("click", function () {
+                searchSection.classList.toggle("d-none");
+                filtersSection.classList.add("d-none");
+                sortingSection.classList.add("d-none");
+                toggleSearch.classList.add("active");
+                toggleFilters.classList.remove("active");
+                toggleSorting.classList.remove("active");
+            });
+
+            toggleSorting.addEventListener("click", function () {
+                sortingSection.classList.toggle("d-none");
+                filtersSection.classList.add("d-none");
+                searchSection.classList.add("d-none");
+                toggleSorting.classList.add("active");
+                toggleFilters.classList.remove("active");
+                toggleSearch.classList.remove("active");
+            });
+        });
+    </script>
+
+    <style>
+        .filter-box, .search-box, .sorting-box {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            opacity: 1;
+            visibility: visible;
+        }
+
+            .filter-box.d-none, .search-box.d-none, .sorting-box.d-none {
+                opacity: 0;
+                visibility: hidden;
+            }
+    </style>
+}

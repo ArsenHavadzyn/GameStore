@@ -1,8 +1,84 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Усе найкраще - для вас!";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="row align-items-center text-center text-md-start">
+        <div class="col-md-6">
+            <h1 class="display-4 fw-bold">Ласкаво просимо до GameStore!</h1>
+            <p class="lead text-muted">Відкрийте для себе найкращі ігри на різні платформи.</p>
+            <a asp-controller="Catalog" asp-action="Index" class="btn btn-outline-dark btn-lg my-3">
+                Переглянути каталог
+            </a>
+        </div>
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1604846887565-640d2f52d564?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                 class="img-fluid rounded shadow" alt="Gaming">
+        </div>
+    </div>
+
+    <section class="mt-5">
+        <h2 class="text-center mb-4">Популярні ігри</h2>
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                @foreach (var game in Model)
+                {
+                    <div class="swiper-slide">
+                        <div class="card h-100 shadow-sm">
+                            <img src="@game.CoverImageUrl" class="card-img-top" alt="@game.Title">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">@game.Title</h5>
+                                <p class="text-muted">Жанр: @game.Genre.Name</p>
+                                <a asp-controller="Catalog" asp-action="Details" asp-route-id="@game.Id"
+                                   class="btn btn-outline-dark btn-lg mt-3">Детальніше</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-5 text-center mb-5">
+        <h2>Зв'яжіться з нами</h2>
+        <p class="text-muted">Маєте питання? Напишіть нам!</p>
+        <a asp-controller="Home" asp-action="Feedback" class="btn btn-dark btn-lg mt-3">Написати</a>
+    </section>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            var swiper = new Swiper(".mySwiper", {
+                loop: true,
+                slidesPerView: "auto",
+                spaceBetween: 30,
+                centeredSlides: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: true
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                    }
+                }
+            });
+        });
+    </script>
+}

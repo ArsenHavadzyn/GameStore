@@ -1,0 +1,46 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Особистий кабінет";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg rounded">
+                <div class="card-header bg-dark text-white text-center">
+                    <h3 class="mb-0">Особистий кабінет</h3>
+                </div>
+                <div class="card-body text-center p-4">
+                    <img src="@(!string.IsNullOrEmpty(Model.ProfilePictureUrl) ? Model.ProfilePictureUrl : "/uploads/default-avatar.png")"
+                         class="rounded-circle mb-3 img-fluid"
+                         style="width:150px; height:150px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"
+                         alt="Аватар">
+
+                    <h4 class="fw-bold">@Model.FullName</h4>
+                    <p class="text-muted mb-2"><strong>Email:</strong> @Model.Email</p>
+                    <p class="text-muted"><strong>Дата народження:</strong> @(Model.BirthDate?.ToString("dd.MM.yyyy") ?? "Не вказано")</p>
+                    <p class="text-muted mb-2"><strong>Телефон:</strong> @(string.IsNullOrEmpty(Model.PhoneNumber) ? "Не вказано" : Model.PhoneNumber)</p>
+                    <p class="text-muted mb-2"><strong>Адреса:</strong> @(string.IsNullOrEmpty(Model.Address) ? "Не вказано" : Model.Address)</p>
+                    <p class="text-muted"><strong>Дата реєстрації:</strong> @Model.RegistrationDate.ToString("dd.MM.yyyy")</p>
+
+                    <div class="d-grid gap-2 my-4">
+                        <form asp-controller="Account" asp-action="EditProfile" method="get">
+                            <button type="submit" class="btn btn-outline-dark btn-lg">Редагувати профіль</button>
+                        </form>
+
+                        <form asp-controller="Account" asp-action="ResetPassword" method="get">
+                            <input type="hidden" name="token" value="@Model.Token" />
+                            <input type="hidden" name="email" value="@Model.Email" />
+                            <button type="submit" class="btn btn-outline-dark btn-lg">Змінити пароль</button>
+                        </form>
+
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="btn btn-outline-danger btn-lg">Вийти</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

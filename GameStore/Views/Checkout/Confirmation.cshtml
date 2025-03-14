@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Підтвердження замовлення";
+    ViewData["Message"] = "Ваше замовлення успішно оформлено!";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="p-4 shadow rounded bg-light text-center">
+                <h2 class="mb-4">Дякуємо за ваше замовлення!</h2>
+                <p class="lead">Ваше замовлення було успішно оформлено та передано на обробку.</p>
+                <p>Перегляньте поштову скриньку для деталей замовлення або отримання цифрового ключа</p>
+                <div class="my-4">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-dark btn-lg">Повернутися на головну</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

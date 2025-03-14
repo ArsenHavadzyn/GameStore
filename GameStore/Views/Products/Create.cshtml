@@ -1,108 +1,132 @@
 ﻿@model GameStore.Models.Product
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Додавання товару";
+    ViewData["Message"] = "Заповніть усі поля для внесення запису";
     Html.AntiForgeryToken();
 }
 
-<h1>Create</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Create" method="post" class="p-4 shadow rounded bg-light">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<h4>Product</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label fw-bold">Назва гри</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label fw-bold">Опис</label>
+                    <textarea asp-for="Description" class="form-control" rows="10"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Price" class="form-label fw-bold">Ціна ($)</label>
+                        <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ReleaseDate" class="form-label fw-bold">Дата виходу</label>
+                        <input asp-for="ReleaseDate" class="form-control" type="date" />
+                        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Developer" class="form-label fw-bold">Розробник</label>
+                        <input asp-for="Developer" class="form-control" />
+                        <span asp-validation-for="Developer" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Publisher" class="form-label fw-bold">Видавець</label>
+                        <input asp-for="Publisher" class="form-control" />
+                        <span asp-validation-for="Publisher" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Platforms" class="form-label fw-bold">Платформи</label>
+                    <select id="platformsSelect" name="Platforms" class="form-control" multiple>
+                        @foreach (var platform in ViewBag.Platforms)
+                        {
+                            <option value="@platform.Value">@platform.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ImageUrl" class="form-label fw-bold">URL зображення</label>
+                    <input asp-for="ImageUrl" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CoverImageUrl" class="form-label fw-bold">URL обкладинки</label>
+                    <input asp-for="CoverImageUrl" class="form-control" />
+                    <span asp-validation-for="CoverImageUrl" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="GenreId" class="form-label fw-bold">Жанр</label>
+                    <select asp-for="GenreId" class="form-control">
+                        @foreach (var genre in ViewBag.Genres)
+                        {
+                            <option value="@genre.Value">@genre.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="IsDLC" class="form-label fw-bold">Це DLC?</label>
+                    <div class="form-check form-check-inline ms-5">
+                        <input asp-for="IsDLC" type="radio" class="form-check-input" id="isDlcYes" value="true" />
+                        <label class="form-check-label" for="isDlcYes">Так</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="IsDLC" type="radio" class="form-check-input" id="isDlcNo" value="false" />
+                        <label class="form-check-label" for="isDlcNo">Ні</label>
+                    </div>
+                    <span asp-validation-for="IsDLC" class="text-danger"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-outline-dark btn-lg">Зберегти</button>
+                </div>
+            </form>
+
+            <div class="my-5 text-center">
+                <a asp-action="Index" class="text-decoration-none link-dark">Назад до списку</a>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReleaseDate" class="control-label"></label>
-                <input asp-for="ReleaseDate" class="form-control" type="date" />
-                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Developer" class="control-label"></label>
-                <input asp-for="Developer" class="form-control" />
-                <span asp-validation-for="Developer" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Publisher" class="control-label"></label>
-                <input asp-for="Publisher" class="form-control" />
-                <span asp-validation-for="Publisher" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Platforms" class="control-label"></label>
-                <select id="platformsSelect" class="form-control" multiple>
-                    @foreach (var platform in ViewBag.Platforms)
-                    {
-                        <option value="@platform.Value">@platform.Text</option>
-                    }
-                </select>
-                <input type="hidden" asp-for="Platforms" id="selectedPlatforms" />
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GenreId" class="control-label"></label>
-                <select asp-for="GenreId" class="form-control">
-                    @foreach (var genre in ViewBag.Genres)
-                    {
-                        <option value="@genre.Value">@genre.Text</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Create</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const platformsSelect = document.getElementById("platformsSelect");
-            const hiddenInput = document.getElementById("selectedPlatforms");
 
-            // Ініціалізація Choices.js
             const choices = new Choices(platformsSelect, {
-                removeItemButton: true,  // Кнопка "x" на плиточках
-                maxItemCount: 10,        // Обмеження кількості вибраних платформ
-                searchEnabled: false,    // Вимкнути пошук
+                removeItemButton: true,
+                maxItemCount: 10,
+                searchEnabled: false,
                 placeholderValue: "Оберіть платформи...",
-                itemSelectText: "",      // Вимкнути текст при виборі
+                itemSelectText: "",
             });
 
-            // Оновлення прихованого поля перед відправкою форми
-            document.querySelector("form").addEventListener("submit", function () {
-                hiddenInput.value = Array.from(platformsSelect.selectedOptions).map(option => option.value).join(",");
-            });
-
-            // Завантаження вже вибраних платформ
             const selectedPlatforms = "@Html.Raw(string.Join(",", Model?.Platforms ?? new List<Platform>()))";
             if (selectedPlatforms) {
                 selectedPlatforms.split(",").forEach(value => {
@@ -110,5 +134,6 @@
                 });
             }
         });
+
     </script>
 }

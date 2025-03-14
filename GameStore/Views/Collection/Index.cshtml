@@ -1,0 +1,35 @@
+﻿@model List<GameStore.Models.Collection>
+
+@{
+    ViewData["Title"] = "Колекції ігор";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-action="Create" class="btn btn-outline-dark btn-lg">Додати нову</a>
+    </div>
+    <table class="table table-striped table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Назва</th>
+                <th>Кількість ігор</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Products.Count</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">✏️</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">🗑️</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

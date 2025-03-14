@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GameStore.Data;
 using GameStore.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameStore.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class GenresController : Controller
     {
         private readonly ApplicationDbContext _context;

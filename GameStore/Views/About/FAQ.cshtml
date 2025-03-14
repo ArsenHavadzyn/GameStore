@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Питання та відповіді";
+    ViewData["Message"] = "GameStore — ваш надійний партнер у світі відеоігор. Ми пропонуємо широкий вибір ігор, вигідні ціни та першокласний сервіс.";
+}
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Питання та відповіді</h1>
+        <p class="lead">Знайдіть відповіді на найпоширеніші питання.</p>
+    </div>
+
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                    Як купити гру в GameStore?
+                </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Оберіть гру, додайте до кошика та оформіть замовлення.</div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                    Як отримати ключ після покупки?
+                </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Цифровий ключ відправляється на вашу електронну пошту.</div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                    Що робити, якщо ключ не працює?
+                </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Зверніться до служби підтримки, і ми оперативно вирішимо проблему.</div>
+            </div>
+        </div>
+    </div>
+</div>

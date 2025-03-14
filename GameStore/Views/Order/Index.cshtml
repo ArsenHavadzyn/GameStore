@@ -1,0 +1,88 @@
+﻿@model List<GameStore.Models.Order>
+@using GameStore.Extensions;
+@{
+    ViewData["Title"] = "Замовлення";
+}
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <label for="userFilter" class="form-label fw-bold">Фільтр за email</label>
+            <form method="get" asp-action="Index">
+                <select name="userEmail" id="userFilter" class="form-select" onchange="this.form.submit()">
+                    <option value="All" selected="@(ViewBag.SelectedUser == "All")">Усі користувачі</option>
+                    @foreach (var email in ViewBag.Users)
+                    {
+                        <option value="@email" selected="@(email == ViewBag.SelectedUser)">@email</option>
+                    }
+                </select>
+                <input type="hidden" name="sortOrder" value="@ViewBag.SelectedSort" />
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <label for="sortOrder" class="form-label fw-bold">Сортування</label>
+            <form method="get" asp-action="Index">
+                <select name="sortOrder" id="sortOrder" class="form-select" onchange="this.form.submit()">
+                    <option value="" selected="@(string.IsNullOrEmpty(ViewBag.SelectedSort))">За замовчуванням</option>
+                    <option value="date_asc" selected="@(ViewBag.SelectedSort == "date_asc")">Дата (старіші)</option>
+                    <option value="date_desc" selected="@(ViewBag.SelectedSort == "date_desc")">Дата (новіші)</option>
+                    <option value="price_asc" selected="@(ViewBag.SelectedSort == "price_asc")">Ціна (дешевші)</option>
+                    <option value="price_desc" selected="@(ViewBag.SelectedSort == "price_desc")">Ціна (дорожчі)</option>
+                    <option value="status" selected="@(ViewBag.SelectedSort == "status")">Статус</option>
+                </select>
+
+                <input type="hidden" name="userEmail" value="@ViewBag.SelectedUser" />
+            </form>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Користувач</th>
+                <th>Товари</th>
+                <th>Дата</th>
+                <th>Сума</th>
+                <th>Статус</th>
+                <th>Дія</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.User.Email</td>
+                    <td>
+                        @foreach (var item in order.OrderItems)
+                        {
+                            <p><a class="link-success text-decoration-none" href="@Url.Action("Details", "Product", new { id = item.ProductId })">@item.Product.Title</a> x @item.Quantity</p>
+                        }
+                    </td>
+                    <td>@order.OrderDate.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@Html.FormatPrice(order.TotalPrice)</td>
+                    <td>
+                        <form method="post" asp-action="UpdateStatus"> <input type="hidden" name="orderId" value="@order.Id" /> 
+                            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()"> 
+                                <option value="Pending" selected="@((order.Status == "Pending") ? "selected" : null)">Очікується</option> 
+                                <option value="Processing" selected="@((order.Status == "Processing") ? "selected" : null)">В обробці</option> 
+                                <option value="Shipped" selected="@((order.Status == "Shipped") ? "selected" : null)">Відправлено</option> 
+                                <option value="Completed" selected="@((order.Status == "Completed") ? "selected" : null)">Виконано</option> 
+                                <option value="Cancelled" selected="@((order.Status == "Cancelled") ? "selected" : null)">Скасовано</option> 
+                            </select> 
+                        </form>
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-outline-info btn-sm">Деталі</a>
+                        <form method="post" asp-action="DeleteOrder" class="d-inline">
+                            <input type="hidden" name="orderId" value="@order.Id" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Видалити це замовлення?')">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,31 +1,31 @@
 ﻿@model GameStore.Models.Genre
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Додавання жанру";
 }
 
-<h1>Create</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Create" class="p-4 shadow rounded bg-light">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<h4>Genre</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-bold">Назва жанру</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-outline-dark btn-lg">Зберегти</button>
+                </div>
+            </form>
+
+            <div class="my-5 text-center">
+                <a asp-action="Index" class="text-decoration-none link-dark">Назад до списку</a>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

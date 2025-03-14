@@ -1,0 +1,119 @@
+﻿@model GameStore.Models.OrderViewModel
+@using GameStore.Extensions;
+
+@{
+    ViewData["Title"] = "Оформлення замовлення";
+    ViewData["Message"] = "Перевірте дані перед підтвердженням покупки";
+    Html.AntiForgeryToken();
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form asp-action="Checkout" method="post" class="p-4 shadow rounded bg-light">
+                <h2 class="text-center mb-4">Оформлення замовлення</h2>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label fw-bold">ПІБ</label>
+                    <input asp-for="FullName" class="form-control" required />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-bold">Email</label>
+                    <input asp-for="Email" class="form-control" type="email" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label fw-bold">Телефон</label>
+                    <input asp-for="PhoneNumber" class="form-control" type="tel" required />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label fw-bold">Адреса доставки</label>
+                    <textarea asp-for="Address" class="form-control" rows="3" required></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <h4 class="mt-4">Спосіб оплати</h4>
+                <div class="mb-3">
+                    <select id="paymentMethod" name="PaymentMethod" class="form-select" required>
+                        <option value="cash">Готівкою при отриманні</option>
+                        <option value="card">Оплата карткою</option>
+                    </select>
+                </div>
+
+                <div id="cardPaymentFields" class="mb-3 d-none">
+                    <label class="form-label fw-bold">Дані картки</label>
+                    <input type="text" class="form-control mb-2" placeholder="Номер картки" maxlength="16">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="CVV" maxlength="3">
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="mt-4">Ваше замовлення</h4>
+                <ul class="list-group mb-3">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>@item.ProductTitle (x @item.Quantity)</span>
+                            <strong>@Html.FormatPrice(item.TotalPrice)</strong>
+                        </li>
+                    }
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Загальна сума:</strong>
+                        <strong>$@Model.TotalAmount</strong>
+                    </li>
+                </ul>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-outline-dark btn-lg">Підтвердити замовлення</button>
+                </div>
+            </form>
+
+            <div class="my-4 text-center">
+                <a asp-controller="Cart" asp-action="Index" class="text-decoration-none link-dark">← Назад до кошика</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const paymentMethod = document.getElementById("paymentMethod");
+            const cardPaymentFields = document.getElementById("cardPaymentFields");
+
+            paymentMethod.addEventListener("change", function () {
+                if (paymentMethod.value === "card") {
+                    cardPaymentFields.classList.remove("d-none");
+                    cardPaymentFields.classList.add("animate__fadeIn");
+                } else {
+                    cardPaymentFields.classList.add("d-none");
+                    cardPaymentFields.classList.remove("animate__fadeIn");
+                }
+            });
+        });
+    </script>
+
+    <style>
+        #cardPaymentFields {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .form-control {
+            border-radius: 8px;
+        }
+    </style>
+}

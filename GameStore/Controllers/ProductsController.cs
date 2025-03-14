@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GameStore.Data;
 using GameStore.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameStore.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -58,32 +62,42 @@ namespace GameStore.Controllers
         }
 
         // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,Platforms,ImageUrl,GenreId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl, CoverImageUrl, GenreId, IsDLC")] Product product, string[] Platforms)
         {
             if (ModelState.IsValid)
             {
+                product.Platforms = Platforms?
+                    .Where(p => !string.IsNullOrWhiteSpace(p))
+                    .Select(p => Enum.Parse<Platform>(p))
+                    .ToList() ?? new List<Platform>();
+
+                product.PlatformsSerialized = JsonSerializer.Serialize(product.Platforms);
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
+                Console.WriteLine($"Platforms received in request: {Platforms?.Length}");
+
+                if (Platforms != null)
+                {
+                    foreach (var platform in Platforms)
+                    {
+                        Console.WriteLine($"Platform: {platform}");
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name");
-            ViewData["Platforms"] = Enum.GetValues(typeof(Platform))
-                            .Cast<Platform>()
-                            .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
-                            .ToList();
-            product.Platforms = Request.Form["Platforms"].ToString()
-                     .Split(',')
-                     .Where(p => !string.IsNullOrEmpty(p))
-                     .Select(p => Enum.Parse<Platform>(p))
-                     .ToList();
 
+            ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name", product.GenreId);
+            ViewBag.Platforms = Enum.GetValues(typeof(Platform))
+                .Cast<Platform>()
+                .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
+                .ToList();
 
             return View(product);
         }
+
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -98,27 +112,31 @@ namespace GameStore.Controllers
             {
                 return NotFound();
             }
+
             ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name");
-            ViewData["Platforms"] = Enum.GetValues(typeof(Platform))
-                            .Cast<Platform>()
-                            .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
-                            .ToList();
-            product.Platforms = Request.Form["Platforms"].ToString()
-                     .Split(',')
-                     .Where(p => !string.IsNullOrEmpty(p))
-                     .Select(p => Enum.Parse<Platform>(p))
-                     .ToList();
+            ViewBag.Platforms = Enum.GetValues(typeof(Platform))
+                .Cast<Platform>()
+                .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
+                .ToList();
+
+            if (!string.IsNullOrEmpty(product.PlatformsSerialized))
+            {
+                product.Platforms = JsonSerializer.Deserialize<List<Platform>>(product.PlatformsSerialized) ?? new List<Platform>();
+            }
+            else
+            {
+                product.Platforms = new List<Platform>();
+            }
 
 
             return View(product);
         }
 
+
         // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,Platforms,ImageUrl,GenreId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl, CoverImageUrl, GenreId, IsDLC")] Product product, string[] Platforms)
         {
             if (id != product.Id)
             {
@@ -129,6 +147,29 @@ namespace GameStore.Controllers
             {
                 try
                 {
+                    if (Platforms != null && Platforms.Any())
+                    {
+                        product.Platforms = Platforms
+                            .Where(p => !string.IsNullOrWhiteSpace(p))
+                            .Select(p =>
+                            {
+                                if (Enum.TryParse<Platform>(p.Trim(), out var platform))
+                                {
+                                    return platform;
+                                }
+                                return (Platform?)null;
+                            })
+                            .Where(p => p.HasValue)
+                            .Select(p => p!.Value)
+                            .ToList();
+                    }
+                    else
+                    {
+                        product.Platforms = new List<Platform>();
+                    }
+
+                    product.PlatformsSerialized = JsonSerializer.Serialize(product.Platforms);
+
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
@@ -145,19 +186,17 @@ namespace GameStore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name");
-            ViewData["Platforms"] = Enum.GetValues(typeof(Platform))
-                            .Cast<Platform>()
-                            .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
-                            .ToList();
-            product.Platforms = Request.Form["Platforms"].ToString()
-                     .Split(',')
-                     .Where(p => !string.IsNullOrEmpty(p))
-                     .Select(p => Enum.Parse<Platform>(p))
-                     .ToList();
+
+            ViewBag.Genres = new SelectList(_context.Genres, "Id", "Name", product.GenreId);
+            ViewBag.Platforms = Enum.GetValues(typeof(Platform))
+                .Cast<Platform>()
+                .Select(p => new SelectListItem { Value = p.ToString(), Text = p.ToString() })
+                .ToList();
 
             return View(product);
         }
+
+
 
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)

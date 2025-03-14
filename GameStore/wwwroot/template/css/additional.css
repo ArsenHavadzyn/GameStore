@@ -1,0 +1,122 @@
+﻿.game-card {
+    position: relative;
+    width: 264px;
+    height: 364px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+    .game-card:hover {
+        transform: scale(1.03);
+    }
+
+    .game-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+.game-info {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    transition: bottom 0.3s ease-in-out;
+    border-radius: 0 0 10px 10px;
+}
+
+.game-card:hover .game-info {
+    bottom: 0;
+}
+
+.game-info h6, .game-info p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.game-image {
+    width: 460px;
+    height: 640px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.game-details h2 {
+    font-weight: bold;
+}
+
+.game-price {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: black;
+}
+
+.platform-badge {
+    display: inline-block;
+    background-color: #ececec;
+    color: black;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.btn-custom {
+    transition: transform 0.2s ease-in-out;
+}
+
+    .btn-custom:hover {
+        transform: scale(1.05);
+    }
+
+.game-cover-header {
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: block;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow:hidden;
+}
+
+.overlay {
+    height: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mySwiper {
+    position: relative;
+    padding-bottom: 60px;
+    overflow: hidden;
+}
+
+.swiper-slide {
+    flex: 0 0 auto;
+    width: auto;
+}
+
+.fav-item {
+    border-width: 2px;
+}
+
+.btn {
+    border-width: 2px;
+}
+
+.feedback-trix {
+    height: 350px;
+}
