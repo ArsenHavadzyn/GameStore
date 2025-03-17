@@ -62,15 +62,15 @@
                         }
                     </td>
                     <td>@order.OrderDate.ToString("dd.MM.yyyy HH:mm")</td>
-                    <td>@Html.FormatPrice(order.TotalPrice)</td>
+                    <td><strong>@Html.FormatPrice(order.TotalPrice)</strong></td>
                     <td>
                         <form method="post" asp-action="UpdateStatus"> <input type="hidden" name="orderId" value="@order.Id" /> 
-                            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()"> 
-                                <option value="Pending" selected="@((order.Status == "Pending") ? "selected" : null)">Очікується</option> 
-                                <option value="Processing" selected="@((order.Status == "Processing") ? "selected" : null)">В обробці</option> 
-                                <option value="Shipped" selected="@((order.Status == "Shipped") ? "selected" : null)">Відправлено</option> 
-                                <option value="Completed" selected="@((order.Status == "Completed") ? "selected" : null)">Виконано</option> 
-                                <option value="Cancelled" selected="@((order.Status == "Cancelled") ? "selected" : null)">Скасовано</option> 
+                            <select name="status" data-select-status="@order.Status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                <option value="Pending" selected="@((order.Status == "Pending") ? "selected" : null)">Очікується</option>
+                                <option value="Processing" selected="@((order.Status == "Processing") ? "selected" : null)">В обробці</option>
+                                <option value="Shipped" selected="@((order.Status == "Shipped") ? "selected" : null)">Відправлено</option>
+                                <option value="Completed" selected="@((order.Status == "Completed") ? "selected" : null)">Виконано</option>
+                                <option value="Cancelled" selected="@((order.Status == "Cancelled") ? "selected" : null)">Скасовано</option>
                             </select> 
                         </form>
                     </td>
@@ -86,3 +86,41 @@
         </tbody>
     </table>
 </div>
+
+@section Scripts
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const statusSelects = document.querySelectorAll("[data-select-status]");
+            statusSelects.forEach(statusSelect => {
+                const status = statusSelect.dataset.selectStatus;
+                const options = statusSelect.querySelectorAll("option[value]");
+                if (status === "Cancelled") {
+                    options.forEach(option => {
+                        if (option.value !== "Cancelled") {
+                            option.remove();
+                        }
+                    });
+                } else if (status === "Completed") {
+                    options.forEach(option => {
+                        if (option.value !== "Completed") {
+                            option.remove();
+                        }
+                    });
+                } else if (status === "Shipped") {
+                    options.forEach(option => {
+                        if (["Pending", "Processing", "Cancelled"].includes(option.value)) {
+                            option.remove();
+                        }
+                    });
+                } else if (status === "Processing") {
+                    options.forEach(option => {
+                        if (["Pending"].includes(option.value)) {
+                            option.remove();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

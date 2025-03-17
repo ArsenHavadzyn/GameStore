@@ -1,0 +1,137 @@
+﻿@using GameStore.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject ApplicationDbContext _context
+@{
+    ViewBag.Collections = _context.Collections.ToList();
+}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <img src="~/favicon/favicon-32x32 - white.png" class="mx-2" />
+        <a class="navbar-brand" href="@Url.Action("Index", "Home")">GameStore</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="catalogDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Каталог
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="catalogDropdown">
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "Catalog")">Каталог</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "DLC")">Каталог DLC</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "Discount")">Знижки</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="collectionsDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Колекції
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="collectionsDropdown">
+                        @if (ViewBag.Collections != null)
+                        {
+                            @foreach (var collection in ViewBag.Collections as List<Collection>)
+                            {
+                                <li>
+                                    <a class="dropdown-item" href="@Url.Action("Collection", "Catalog", new { id = collection.Id })">
+                                        @collection.Name
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Про нас
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="aboutDropdown">
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "About")">Про компанію</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Guarantee", "About")">Гарантія</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Delivery", "About")">Доставка</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("FAQ", "About")">Питання та відповіді</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="navbar-nav nav-ctrl-btns">
+                <li class="nav-item dropdown">
+                    <form id="currency-form" method="post" asp-controller="Currency" asp-action="SetCurrency" class="d-flex align-items-center">
+                        <input type="hidden" name="returnUrl" value="@Context.Request.Path">
+                        <input type="hidden" name="currency" value="">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-light nav-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span id="selected-currency">Валюта</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-center">
+                                <li><button type="button" class="dropdown-item currency-option" data-currency="USD">USD</button></li>
+                                <li><button type="button" class="dropdown-item currency-option" data-currency="EUR">EUR</button></li>
+                                <li><button type="button" class="dropdown-item currency-option" data-currency="UAH">UAH</button></li>
+                            </ul>
+                        </div>
+                    </form>
+                </li>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var user = await UserManager.GetUserAsync(User);
+                    bool isAdmin = user != null && await UserManager.IsInRoleAsync(user, "Admin");
+                    <li class="nav-item dropdown">
+                        <a class="btn btn-light fav-item nav-loginned-btn" href="#" id="accountDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false" style="border-radius:0px; font-weight:bold"> 
+                            Профіль
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="accountDropdown">
+                            <li>
+                                <a class="dropdown-item" asp-controller="Account" asp-action="PersonalCabinet">Особистий кабінет</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Favorites" asp-action="Index">Список улюблених</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Order" asp-action="MyOrders">Мої замовлення</a>
+                            </li>
+                            @if (isAdmin)
+                            {
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="Index">Панель адміністратора</a>
+                                </li>
+                            }
+                            <li>
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="dropdown-item">Вийти</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    @await Component.InvokeAsync("Cart")
+                }
+                else
+                {
+                    <li>
+                        <a class="btn btn-outline-light fav-item nav-btn nav-loginned-btn" style="border-bottom-left-radius:0px; border-top-left-radius:0px;" asp-controller="Account" asp-action="Login">Увійти</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+<script>
+    document.querySelectorAll('.currency-option').forEach(item => {
+        item.addEventListener('click', event => {
+            document.querySelector('input[name="currency"]').value = item.getAttribute('data-currency');
+            document.querySelector('#currency-form').submit();
+        });
+    });
+</script>

@@ -1,4 +1,4 @@
-﻿@model Dictionary<int, int>
+﻿@model List<GameStore.Models.OrderItemViewModel>
 @inject GameStore.Data.ApplicationDbContext _context
 @using GameStore.Extensions
 
@@ -10,44 +10,48 @@ else
 {
     ViewData["Title"] = "Ваш кошик 🛒";
     var total = 0m;
-    <table class="table table-striped my-4">
-        <thead>
-            <tr>
-                <th>Товар</th>
-                <th>Кількість</th>
-                <th>Ціна</th>
-                <th>Разом</th>
-                <th>Дії</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                var product = _context.Products.Find(item.Key);
-                var subtotal = product.Price * item.Value;
-                total += subtotal;
-
+    <div class="table-responsive">
+        <table class="table table-striped my-4">
+            <thead class="text-center">
                 <tr>
-                    <td>@product.Title</td>
-                    <td>
-                        <a asp-action="RemoveOne" asp-route-productId="@item.Key" class="btn btn-sm btn-outline-secondary fav-item">➖</a>
-                        <strong>@item.Value</strong>
-                        <a asp-action="AddToCart" asp-route-productId="@item.Key" class="btn btn-sm btn-outline-secondary fav-item">➕</a>
-                    </td>
-                    <td>@Html.FormatPrice(product.Price)</td>
-                    <td>@subtotal$</td>
-                    <td>
-                        <a asp-action="Remove" asp-route-productId="@item.Key" class="btn btn-sm btn-outline-danger fav-item">🗑️ Видалити</a>
-                    </td>
+                    <th>Товар</th>
+                    <th>Кількість</th>
+                    <th>Ціна</th>
+                    <th>Разом</th>
+                    <th>Дії</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var actualPrice = item.TotalPrice / item.Quantity;
+                    var subtotal = item.TotalPrice;
+                    total += subtotal;
 
-    <h4>Загальна сума: <strong>@total$</strong></h4>
+                    <tr class="text-center">
+                        <td>@item.ProductTitle</td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <a asp-action="RemoveOne" asp-route-productId="@item.ProductId" class="btn btn-sm btn-outline-secondary mx-1 fav-item">➖</a>
+                                <strong>@item.Quantity</strong>
+                                <a asp-action="AddToCart" asp-route-productId="@item.ProductId" class="btn btn-sm btn-outline-secondary mx-1 fav-item">➕</a>
+                            </div>
+                        </td>
+                        <td>@Html.FormatPrice(actualPrice)</td>
+                        <td>@Html.FormatPrice(subtotal)</td>
+                        <td>
+                            <a asp-action="Remove" asp-route-productId="@item.ProductId" class="btn btn-sm btn-outline-danger fav-item">🗑️</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-    <div class="my-4">
-        <a asp-action="Clear" class="btn btn-outline-warning fav-item">Очистити кошик</a>
-        <a asp-controller="Cart" asp-action="Checkout" class="btn btn-outline-success fav-item">Оформити замовлення</a>
+    <h4 class="text-center">Загальна сума: <strong>@Html.FormatPrice(total)</strong></h4>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between my-4">
+        <a asp-action="Clear" class="btn btn-outline-warning fav-item btn-block mb-2 mb-md-0">Очистити кошик</a>
+        <a asp-controller="Cart" asp-action="Checkout" class="btn btn-outline-success fav-item btn-block">Оформити замовлення</a>
     </div>
 }
