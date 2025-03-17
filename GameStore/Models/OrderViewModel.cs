@@ -20,6 +20,8 @@ namespace GameStore.Models
 
         public List<OrderItemViewModel> CartItems { get; set; } = new();
         public decimal TotalAmount => CartItems?.Sum(item => item.TotalPrice) ?? 0;
+
+        public bool UseCustomEmail { get; set; }
     }
 
     public class OrderItemViewModel

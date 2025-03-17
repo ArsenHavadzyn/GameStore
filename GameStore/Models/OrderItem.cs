@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GameStore.Models
 {
@@ -14,7 +15,9 @@ namespace GameStore.Models
         public Product Product { get; set; } = null!;
 
         public int Quantity { get; set; }
-        public decimal Price { get; set; } = 0;
+
+        [Display(Name = "Ціна за одиницю")]
+        public decimal Price { get; set; }
         public decimal TotalPrice { get; internal set; } = 0;
         public string ProductTitle { get; internal set; }
     }

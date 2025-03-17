@@ -64,7 +64,7 @@ namespace GameStore.Controllers
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl, CoverImageUrl, GenreId, IsDLC")] Product product, string[] Platforms)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl,CoverImageUrl,GenreId,IsDLC")] Product product, string[] Platforms)
         {
             if (ModelState.IsValid)
             {
@@ -136,7 +136,7 @@ namespace GameStore.Controllers
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ReleaseDate,Developer,Publisher,ImageUrl, CoverImageUrl, GenreId, IsDLC")] Product product, string[] Platforms)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,Discount,ReleaseDate,Developer,Publisher,ImageUrl, CoverImageUrl, GenreId, IsDLC")] Product product, string[] Platforms)
         {
             if (id != product.Id)
             {

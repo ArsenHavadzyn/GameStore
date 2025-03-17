@@ -35,8 +35,8 @@
                 <tr>
                     <td>@item.Product.Title</td>
                     <td>@item.Quantity</td>
-                    <td>@Html.FormatPrice(item.Product.Price)</td>
-                    <td>@Html.FormatPrice(item.Quantity * item.Product.Price)</td>
+                    <td>@Html.FormatPrice(item.Product.Discount > 0 ? item.Product.DiscountedPrice : item.Product.Price)</td>
+                    <td>@Html.FormatPrice(item.Quantity * (item.Product.Discount > 0 ? item.Product.DiscountedPrice : item.Product.Price))</td>
                 </tr>
             }
         </tbody>

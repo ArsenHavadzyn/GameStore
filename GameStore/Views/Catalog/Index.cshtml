@@ -105,12 +105,26 @@
         @foreach (var product in Model)
         {
             <div class="col mb-4">
-                <div class="game-card" onclick="location.href='@Url.Action("Details", "Catalog", new { id = product.Id })'">
+                <div class="game-card position-relative" onclick="location.href='@Url.Action("Details", "Catalog", new { id = product.Id })'">
+                    @if (product.Discount > 0)
+                    {
+                        <div class="ribbon">Знижка</div>
+                    }
                     <img src="@product.ImageUrl" alt="@product.Title">
                     <div class="game-info">
                         <h6 class="mb-1">@product.Title</h6>
                         <p class="fw small">Жанр: @product.Genre.Name</p>
-                        <p class="fw-bold small">Ціна: @Html.FormatPrice(product.Price)</p>
+                        @if (product.Discount > 0)
+                        {
+                            <p class="fw-bold small">
+                                <span class="text-decoration-line-through text-muted">@Html.FormatPrice(product.Price)</span>
+                                <span class="text-danger">@Html.FormatPrice(product.DiscountedPrice)</span>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="fw-bold small">@Html.FormatPrice(product.Price)</p>
+                        }
                     </div>
                 </div>
             </div>
@@ -118,7 +132,7 @@
     </div>
 </div>
 
-@section Scripts {
+@section Scripts{
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const toggleFilters = document.getElementById("toggleFilters");
@@ -158,20 +172,16 @@
         });
     </script>
 
-    <style>
-        .filter-box, .search-box, .sorting-box {
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            background: #fff;
-            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-            opacity: 1;
-            visibility: visible;
-        }
-
-            .filter-box.d-none, .search-box.d-none, .sorting-box.d-none {
-                opacity: 0;
-                visibility: hidden;
+    <script>
+        document.addEventListener("trix-action-invoke", function(event) {
+            if (event.actionName === "attachFiles") {
+                event.preventDefault();
             }
-    </style>
+        });
+
+        document.addEventListener("trix-file-accept", function(event) {
+            event.preventDefault();
+            alert("Вставка файлів заборонена.");
+        });
+    </script>
 }

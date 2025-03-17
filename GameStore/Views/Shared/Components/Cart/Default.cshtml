@@ -1,24 +1,9 @@
 ﻿<li class="nav-item">
     <form class="d-flex" asp-controller="Cart" asp-action="Index">
-        <button class="btn btn-outline-light nav-btn d-flex align-items-center" type="submit" style="border-bottom-left-radius:0; border-top-left-radius:0;">
-            <i class="nav-item me-1"></i>
-            Кошик
+        <button class="btn btn-outline-light nav-btn d-flex align-items-center nav-loginned-btn" type="submit" style="border-bottom-left-radius:0; border-top-left-radius:0;">
+            <wbr />
+            <span class="d-none d-sm-inline">Кошик</span>
             <span class="badge bg-light text-black ms-1 rounded-pill align-self-center">@Model</span>
         </button>
     </form>
 </li>
-
-<style>
-    .badge {
-        background-color: #f8f9fa;
-        color: black;
-        transition: all 0.3s ease;
-    }
-
-        .badge:hover {
-            background-color: black;
-            color: white;
-            cursor: pointer;
-        }
-
-</style>

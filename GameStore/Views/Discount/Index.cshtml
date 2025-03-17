@@ -1,0 +1,38 @@
+﻿@model List<Product>
+@using GameStore.Extensions
+
+@{
+    ViewData["Title"] = "Гарячі знижки 🔥";
+}
+
+<div class="container mt-5">
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center mt-4">
+        @foreach (var product in Model)
+        {
+            <div class="col mb-4">
+                <div class="game-card position-relative" onclick="location.href='@Url.Action("Details", "Catalog", new { id = product.Id })'">
+                    @if (product.Discount > 0)
+                    {
+                        <div class="ribbon">Знижка</div>
+                    }
+                    <img src="@product.ImageUrl" alt="@product.Title">
+                    <div class="game-info">
+                        <h6 class="mb-1">@product.Title</h6>
+                        <p class="small mb-1">Жанр: @product.Genre?.Name</p>
+                        @if (product.Discount > 0)
+                        {
+                            <p class="fw-bold small">
+                                <span class="text-decoration-line-through text-muted">@Html.FormatPrice(product.Price)</span>
+                                <span class="text-danger">@Html.FormatPrice(product.DiscountedPrice)</span>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="fw-bold small">@Html.FormatPrice(product.Price)</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

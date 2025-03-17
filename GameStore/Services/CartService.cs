@@ -63,34 +63,25 @@ namespace GameStore.Services
             var productIds = cart.Keys.ToList();
             var products = _context.Products.Where(p => productIds.Contains(p.Id)).ToList();
 
-           
-
-            Console.WriteLine("Cart before creating OrderViewModel: " + JsonSerializer.Serialize(cart));
-            Console.WriteLine("Products loaded from DB: " + JsonSerializer.Serialize(products));
-
             var cartItems = cart.Select(item =>
             {
                 var product = products.FirstOrDefault(p => p.Id == item.Key);
-                if (product == null)
-                {
-                    Console.WriteLine($"Product {item.Key} not found in DB!");
-                    return null;
-                }
-                var orderItem = new OrderItemViewModel
+                if (product == null) return null;
+
+                decimal actualPrice = product.Discount > 0 ? product.DiscountedPrice : product.Price;
+
+                return new OrderItemViewModel
                 {
                     ProductId = product.Id,
                     ProductTitle = product.Title,
                     Quantity = item.Value,
-                    TotalPrice = item.Value * product.Price
+                    TotalPrice = item.Value * actualPrice
                 };
-                Console.WriteLine($"Created order item: {JsonSerializer.Serialize(orderItem)}");
-                return orderItem;
             }).Where(item => item != null).ToList();
 
-            Console.WriteLine("Final CartItems for OrderViewModel: " + JsonSerializer.Serialize(cartItems));
-
-            return new OrderViewModel { CartItems = cartItems ?? new List<OrderItemViewModel>() };
+            return new OrderViewModel { CartItems = cartItems };
         }
+
 
 
         public void ClearCart()

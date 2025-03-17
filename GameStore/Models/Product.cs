@@ -18,6 +18,12 @@ namespace GameStore.Models
         [Display(Name = "Ціна")]
         public decimal Price { get; set; }
 
+        [Display(Name = "Знижка (%)")]
+        public int Discount { get; set; } = 0;
+
+        [NotMapped]
+        public decimal DiscountedPrice => Price * (1 - (Discount / 100.0m));
+
         [Display(Name = "Дата виходу")]
         public DateTime ReleaseDate { get; set; }
 

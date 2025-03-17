@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GameStore.Models
@@ -13,7 +14,18 @@ namespace GameStore.Models
         public decimal TotalPrice { get; set; } = 0;
         public string Status { get; set; } = "Pending";
 
+        [Required, Phone]
+        public string PhoneNumber { get; set; } = string.Empty;
+
+        [Required]
+        public string Address { get; set; } = string.Empty;
+
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+        public string DigitalCode { get; set; } = string.Empty;
+
+        public string? CustomEmail { get; set; }
+
     }
 
 }

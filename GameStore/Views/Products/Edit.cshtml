@@ -29,10 +29,16 @@
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="ReleaseDate" class="form-label fw-bold">Дата виходу</label>
-                        <input asp-for="ReleaseDate" class="form-control" type="date" />
-                        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                        <label asp-for="Discount" class="form-label fw-bold">Знижка (%)</label>
+                        <input asp-for="Discount" class="form-control" min="0" max="100" />
+                        <span asp-validation-for="Discount" class="text-danger"></span>
                     </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ReleaseDate" class="form-label fw-bold">Дата виходу</label>
+                    <input asp-for="ReleaseDate" class="form-control" type="date" />
+                    <span asp-validation-for="ReleaseDate" class="text-danger"></span>
                 </div>
 
                 <div class="row">
