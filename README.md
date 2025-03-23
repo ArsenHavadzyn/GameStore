@@ -43,11 +43,11 @@ cd GameStore
 
 2. Налаштування середовища
 
-2.1. Створення .env файлу (або змінних середовища)
+2.1. - Створення .env файлу (або змінних середовища)
 
 DB_CONNECTION_STRING=Server=localhost;Database=GameStoreDB;User Id=sa;Password=YourPassword;
 
-2.2. Налаштування appsettings.json
+2.2. - Налаштування appsettings.json
 
 Вкажіть правильний рядок підключення до бази даних та параметри SMTP для email-сповіщень.
 
@@ -59,11 +59,11 @@ docker-compose up --build
 
 4. Локальний запуск без Docker
 
-4.1. Міграція бази даних
+4.1. - Міграція бази даних
 
 dotnet ef database update
 
-4.2. Запуск застосунку
+4.2. - Запуск застосунку
 
 dotnet run
 
