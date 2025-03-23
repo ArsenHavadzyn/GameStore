@@ -6,7 +6,7 @@ using GameStore.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
-using GameStore.Services;
+using GameStore.Services.Interfaces;
 
 namespace GameStore.Controllers
 {

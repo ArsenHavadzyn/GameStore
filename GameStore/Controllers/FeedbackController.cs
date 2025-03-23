@@ -1,5 +1,5 @@
 ﻿using GameStore.Models;
-using GameStore.Services;
+using GameStore.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore.Controllers

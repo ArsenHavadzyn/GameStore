@@ -6,20 +6,70 @@ using System.Text.Json;
 using System;
 using Microsoft.EntityFrameworkCore;
 using GameStore.Data;
+using GameStore.Services.Interfaces;
 
 namespace GameStore.Services
 {
     public class CartService
     {
+        private static CartService? _instance;
+        private static readonly object _lock = new();
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ApplicationDbContext _context;
+        private readonly Func<ApplicationDbContext> _dbContextFactory; // Factory Scoped `ApplicationDbContext`
+        private readonly Func<IPriceStrategy> _priceStrategyFactory; // Factory Scoped `IPriceStrategy`
 
         private const string CartSessionKey = "Cart";
 
-        public CartService(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context)
+        public CartService(IHttpContextAccessor httpContextAccessor, Func<IPriceStrategy> priceStrategyFactory, Func<ApplicationDbContext> dbContextFactory)
         {
             _httpContextAccessor = httpContextAccessor;
-            _context = context;
+            _priceStrategyFactory = priceStrategyFactory;
+            _dbContextFactory = dbContextFactory;
+        }
+
+        public static CartService GetInstance(IHttpContextAccessor httpContextAccessor, Func<IPriceStrategy> priceStrategyFactory, Func<ApplicationDbContext> dbContextFactory)
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new CartService(httpContextAccessor, priceStrategyFactory, dbContextFactory);
+                    }
+                }
+            }
+            return _instance;
+        }
+
+        public OrderViewModel GetOrderViewModel()
+        {
+            var cart = GetCart();
+            if (!cart.Any()) return new OrderViewModel { CartItems = new List<OrderItemViewModel>() };
+
+            using var dbContext = _dbContextFactory(); // Used new Scoped `ApplicationDbContext`
+            var productIds = cart.Keys.ToList();
+            var products = dbContext.Products.Where(p => productIds.Contains(p.Id)).ToList();
+
+            var cartItems = cart.Select(item =>
+            {
+                var product = products.FirstOrDefault(p => p.Id == item.Key);
+                if (product == null) return null;
+
+                var priceStrategy = _priceStrategyFactory(); // Gotten new Scoped `IPriceStrategy`
+                decimal actualPrice = priceStrategy.CalculatePrice(product);
+
+                return new OrderItemViewModel
+                {
+                    ProductId = product.Id,
+                    ProductTitle = product.Title,
+                    Quantity = item.Value,
+                    TotalPrice = item.Value * actualPrice
+                };
+
+            }).Where(item => item != null).ToList();
+
+            return new OrderViewModel { CartItems = cartItems };
         }
 
         public Dictionary<int, int> GetCart()
@@ -54,35 +104,6 @@ namespace GameStore.Services
         {
             return !GetCart().Any();
         }
-
-        public OrderViewModel GetOrderViewModel()
-        {
-            var cart = GetCart();
-            if (!cart.Any()) return new OrderViewModel { CartItems = new List<OrderItemViewModel>() };
-
-            var productIds = cart.Keys.ToList();
-            var products = _context.Products.Where(p => productIds.Contains(p.Id)).ToList();
-
-            var cartItems = cart.Select(item =>
-            {
-                var product = products.FirstOrDefault(p => p.Id == item.Key);
-                if (product == null) return null;
-
-                decimal actualPrice = product.Discount > 0 ? product.DiscountedPrice : product.Price;
-
-                return new OrderItemViewModel
-                {
-                    ProductId = product.Id,
-                    ProductTitle = product.Title,
-                    Quantity = item.Value,
-                    TotalPrice = item.Value * actualPrice
-                };
-            }).Where(item => item != null).ToList();
-
-            return new OrderViewModel { CartItems = cartItems };
-        }
-
-
 
         public void ClearCart()
         {

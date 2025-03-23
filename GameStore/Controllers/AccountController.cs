@@ -1,5 +1,5 @@
 ﻿using GameStore.Models;
-using GameStore.Services;
+using GameStore.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

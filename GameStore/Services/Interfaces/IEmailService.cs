@@ -1,4 +1,4 @@
-﻿namespace GameStore.Services
+﻿namespace GameStore.Services.Interfaces
 {
     public interface IEmailService
     {

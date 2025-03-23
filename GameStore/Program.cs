@@ -5,6 +5,7 @@ using GameStore.Services;
 using Serilog;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using GameStore.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +37,18 @@ builder.Services.AddSession(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<CurrencyService>();
-builder.Services.AddScoped<CartService>();
+builder.Services.AddSingleton<CartService>(sp =>
+{
+    var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
+
+    return new CartService(
+        httpContextAccessor,
+        () => sp.CreateScope().ServiceProvider.GetRequiredService<IPriceStrategy>(), // Used IPriceStrategy as a Factory
+        () => sp.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>() // Used ApplicationDbContext as a Factory
+    );
+});
+builder.Services.AddScoped<IPriceStrategy, DiscountPriceStrategy>(); // Add Price strategy to DI container
+builder.Services.AddScoped<OrderFacade>(); // Add OrderFacade to DI container
 builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.ConfigureApplicationCookie(options =>
