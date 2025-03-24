@@ -66,6 +66,12 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
+builder.WebHost.UseSentry(options =>
+{
+    options.Dsn = "https://9de45f440961a2b82947f54762bac48a@o4509032220393472.ingest.de.sentry.io/4509032233304144";
+    options.Debug = true;
+});
+
 builder.Host.UseSerilog();
 
 var app = builder.Build();
