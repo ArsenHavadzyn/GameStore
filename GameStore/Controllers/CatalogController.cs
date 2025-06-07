@@ -86,7 +86,11 @@ namespace GameStore.Controllers
         }
         public IActionResult Details(int id)
         {
-            var product = _context.Products.Include(p => p.Genre).FirstOrDefault(p => p.Id == id);
+            var product = _context.Products
+                .Include(p => p.Genre)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
+                .FirstOrDefault(p => p.Id == id);
             if (product == null)
                 return NotFound();
 
