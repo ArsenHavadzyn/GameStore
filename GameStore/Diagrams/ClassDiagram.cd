@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="GameStore.Controllers.ViewComponents.CartViewComponent" Collapsed="true">
-    <Position X="2.25" Y="2.5" Width="1.5" />
+    <Position X="4" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAIAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\ViewComponents\CartViewComponent.cs</FileName>
@@ -15,91 +15,98 @@
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.AdminController" Collapsed="true">
-    <Position X="5.75" Y="1.5" Width="1.5" />
+    <Position X="7.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAAAABAAAAAAAAIAiAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>Controllers\AdminController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.CartController" Collapsed="true">
-    <Position X="12.75" Y="1.5" Width="1.5" />
+    <Position X="14.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABAAAAIAABAAgAAAAAAAAAAEAAABAACA=</HashCode>
       <FileName>Controllers\CartController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.CatalogController" Collapsed="true">
-    <Position X="4" Y="2.5" Width="1.5" />
+    <Position X="5.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAABRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\CatalogController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.CollectionController" Collapsed="true">
-    <Position X="9.25" Y="2.5" Width="1.5" />
+    <Position X="11" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAABBACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
       <FileName>Controllers\CollectionController.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="GameStore.Controllers.CommentController" Collapsed="true">
+    <Position X="14.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAABAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\CommentController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="GameStore.Controllers.CurrencyController" Collapsed="true">
-    <Position X="12.75" Y="2.5" Width="1.5" />
+    <Position X="2.25" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\CurrencyController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.DiscountController" Collapsed="true">
-    <Position X="5.75" Y="3.5" Width="1.5" />
+    <Position X="12.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>Controllers\DiscountController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.DLCController" Collapsed="true">
-    <Position X="7.5" Y="3.5" Width="1.5" />
+    <Position X="0.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>Controllers\DLCController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.FavoritesController" Collapsed="true">
-    <Position X="2.25" Y="4.5" Width="1.5" />
+    <Position X="11" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAQAABAAAAAAAAAAAAAAAAAAAEAEAAAAAAAA=</HashCode>
       <FileName>Controllers\FavoritesController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.FeedbackController" Collapsed="true">
-    <Position X="4" Y="4.5" Width="1.5" />
+    <Position X="12.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAgAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\FeedbackController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.GenresController" Collapsed="true">
-    <Position X="14.5" Y="4.5" Width="1.5" />
+    <Position X="7.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAABBACAAAAAAAAAAAEAAkACAAEAAAAAAAA=</HashCode>
       <FileName>Controllers\GenresController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.HomeController" Collapsed="true">
-    <Position X="0.5" Y="5.5" Width="1.5" />
+    <Position X="9.25" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABQAAAAACAAAAIAAAAQAAAAEAAAAAAAA=</HashCode>
       <FileName>Controllers\HomeController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.OrderController" Collapsed="true">
-    <Position X="11" Y="5.5" Width="1.5" />
+    <Position X="4" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAAEAAABBAAAAAAAAAAQAAAAAAAAAkEAAAAAAAA=</HashCode>
       <FileName>Controllers\OrderController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.ProductsController" Collapsed="true">
-    <Position X="4" Y="6.5" Width="1.5" />
+    <Position X="14.5" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACABBACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
       <FileName>Controllers\ProductsController.cs</FileName>
@@ -113,28 +120,28 @@
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Controllers.GameStore.Controllers.CheckoutController" Collapsed="true">
-    <Position X="5.75" Y="2.5" Width="1.5" />
+    <Position X="7.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABAAAAAAAAAAwIAAAAAAAIAFAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAgIAAACAAAIAEAAAAAAAA=</HashCode>
       <FileName>Controllers\CheckoutController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.CreateIdentitySchema" Collapsed="true">
-    <Position X="11" Y="2.5" Width="1.5" />
+    <Position X="0.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\00000000000000_CreateIdentitySchema.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.InitialCreate" Collapsed="true">
-    <Position X="2.25" Y="5.5" Width="1.5" />
+    <Position X="11" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250216152043_InitialCreate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.AddCoverImageUrlToProduct" Collapsed="true">
-    <Position X="7.5" Y="0.5" Width="1.5" />
+    <Position X="9.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250222102139_AddCoverImageUrlToProduct.cs</FileName>
@@ -148,290 +155,335 @@
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.UpdateCollectionWithDescription" Collapsed="true">
-    <Position X="11" Y="6.5" Width="1.5" />
+    <Position X="5.75" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250224071719_UpdateCollectionWithDescription.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.AddIdentity" Collapsed="true">
-    <Position X="2.25" Y="1.5" Width="1.5" />
+    <Position X="4" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250224125725_AddIdentity.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.UpdateDbContext" Collapsed="true">
-    <Position X="12.75" Y="6.5" Width="1.5" />
+    <Position X="7.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250226071332_UpdateDbContext.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.AddFavoritesTable" Collapsed="true">
-    <Position X="0.5" Y="1.5" Width="1.5" />
+    <Position X="2.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250301091645_AddFavoritesTable.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.UpdateOrderModel" Collapsed="true">
-    <Position X="0.5" Y="7.5" Width="1.5" />
+    <Position X="11" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250302120001_UpdateOrderModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.UpdateOrderItems" Collapsed="true">
-    <Position X="14.5" Y="6.5" Width="1.5" />
+    <Position X="9.25" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250302133400_UpdateOrderItems.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.FixTotalPricePrecision" Collapsed="true">
-    <Position X="9.25" Y="4.5" Width="1.5" />
+    <Position X="2.25" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250303205257_FixTotalPricePrecision.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.FixOrderItems" Collapsed="true">
-    <Position X="7.5" Y="4.5" Width="1.5" />
+    <Position X="0.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250307080631_FixOrderItems.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.UpdUserProfile" Collapsed="true">
-    <Position X="4" Y="7.5" Width="1.5" />
+    <Position X="14.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250309080954_UpdUserProfile.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.AddDlcProp" Collapsed="true">
-    <Position X="14.5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250312090033_AddDlcProp.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.AddTokenPropToUser" Collapsed="true">
-    <Position X="4" Y="1.5" Width="1.5" />
+    <Position X="5.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250313083133_AddTokenPropToUser.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.AddDigitalKeyPropToOrderModel" Collapsed="true">
-    <Position X="11" Y="0.5" Width="1.5" />
+    <Position X="12.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250314090139_AddDigitalKeyPropToOrderModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.UpdateOrderModels" Collapsed="true">
-    <Position X="2.25" Y="7.5" Width="1.5" />
+    <Position X="12.75" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250314120544_UpdateOrderModels.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.AddCustomEmailProp" Collapsed="true">
-    <Position X="9.25" Y="0.5" Width="1.5" />
+    <Position X="11" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250314121601_AddCustomEmailProp.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.Migrations.AddDiscounts" Collapsed="true">
-    <Position X="12.75" Y="0.5" Width="1.5" />
+    <Position X="14.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
       <FileName>Data\Migrations\20250315100011_AddDiscounts.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="GameStore.Data.Migrations.AddCommentModel" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Data\Migrations\20250607081033_AddCommentModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="GameStore.Data.Migrations.ApplicationDbContextModelSnapshot" Collapsed="true">
-    <Position X="9.25" Y="1.5" Width="1.5" />
+    <Position X="11" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
       <FileName>Data\Migrations\ApplicationDbContextModelSnapshot.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Data.ApplicationDbContext" Collapsed="true">
-    <Position X="7.5" Y="1.5" Width="1.5" />
+    <Position X="9.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAAEAAAAAAAIAAAAAEAAAAAAAAACAAIAAAAQ=</HashCode>
+      <HashCode>AAEAAAAAAAEAAAAAAAIAAAAAEAAAAAAAAACAAIAAIAQ=</HashCode>
       <FileName>Data\ApplicationDbContext.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Extensions.CurrencyHelper" Collapsed="true">
-    <Position X="14.5" Y="2.5" Width="1.5" />
+    <Position X="4" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Extensions\CurrencyHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Extensions.SessionExtensions" Collapsed="true">
-    <Position X="9.25" Y="6.5" Width="1.5" />
+    <Position X="4" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAIAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Extensions\SessionExtensions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Middleware.CurrencyMiddleware" Collapsed="true">
-    <Position X="0.5" Y="3.5" Width="1.5" />
+    <Position X="5.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
       <FileName>Middleware\CurrencyMiddleware.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.ApplicationUser" Collapsed="true">
-    <Position X="11" Y="1.5" Width="1.5" />
+    <Position X="12.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAAAAAQAQAAQAAAAACAAAAAAARAAA=</HashCode>
       <FileName>Models\ApplicationUser.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.Collection" Collapsed="true">
-    <Position X="7.5" Y="2.5" Width="1.5" />
+    <Position X="9.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Models\Collection.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="GameStore.Models.Comment" Collapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAADAAAAAgAAAAAAACAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Comment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="GameStore.Models.EditProfileViewModel" Collapsed="true">
-    <Position X="11" Y="3.5" Width="1.5" />
+    <Position X="4" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAIAAAAAAAAAAAAAAAAAABAAAAAAQAAA=</HashCode>
       <FileName>Models\EditProfileViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.ErrorViewModel" Collapsed="true">
-    <Position X="14.5" Y="3.5" Width="1.5" />
+    <Position X="7.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\ErrorViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.Favorite" Collapsed="true">
-    <Position X="0.5" Y="4.5" Width="1.5" />
+    <Position X="9.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAADAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Favorite.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.FeedbackViewModel" Collapsed="true">
-    <Position X="5.75" Y="4.5" Width="1.5" />
+    <Position X="14.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAAIAAAAQAAAAAAAAAAAAAIAAAAAA=</HashCode>
       <FileName>Models\FeedbackViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.ForgotPasswordViewModel" Collapsed="true">
-    <Position X="11" Y="4.5" Width="1.5" />
+    <Position X="4" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\ForgotPasswordViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.Genre" Collapsed="true">
-    <Position X="12.75" Y="4.5" Width="1.5" />
+    <Position X="5.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Models\Genre.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.LoginViewModel" Collapsed="true">
-    <Position X="4" Y="5.5" Width="1.5" />
+    <Position X="12.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAgAAA=</HashCode>
       <FileName>Models\LoginViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.ManageRolesViewModel" Collapsed="true">
-    <Position X="7.5" Y="5.5" Width="1.5" />
+    <Position X="0.5" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAACAAgIAAAAAAAAgAAQAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\ManageRolesViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.UserPurchaseViewModel" Collapsed="true">
-    <Position X="5.75" Y="7.5" Width="1.5" />
+    <Position X="0.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAQCAAAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
       <FileName>Models\ManageRolesViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.Order" Collapsed="true">
-    <Position X="9.25" Y="5.5" Width="1.5" />
+    <Position X="2.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAADAAAEAAEAAAAAAAAQQAgAAAAAQAACAAAAAAAAAAA=</HashCode>
       <FileName>Models\Order.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.OrderItem" Collapsed="true">
-    <Position X="12.75" Y="5.5" Width="1.5" />
+    <Position X="7.5" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAECAAAAAQAAAAAAAAAAAAAACAAAQAAAAAAAgAAAAAA=</HashCode>
       <FileName>Models\OrderItem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.OrderViewModel" Collapsed="true">
-    <Position X="0.5" Y="6.5" Width="1.5" />
+    <Position X="11" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAAAAAAgCAQAIAAAAAAQAAAAAAAAAACABAAAAAAAAA=</HashCode>
       <FileName>Models\OrderViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.OrderItemViewModel" Collapsed="true">
-    <Position X="14.5" Y="5.5" Width="1.5" />
+    <Position X="9.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAAAAAAAAAAAAAAAAAAAAAACAAAQAAAAAAAgAAAAAA=</HashCode>
       <FileName>Models\OrderViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.Product" Collapsed="true">
-    <Position X="2.25" Y="6.5" Width="1.5" />
+    <Position X="12.75" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACQAAAAQAoIEAACAIAAAAAAIAAAAEACgCgAAAAAAA=</HashCode>
+      <HashCode>AAACQAAAAQAoIEAACAIAAAAAAIAAAAEACgCgAAAAIAA=</HashCode>
       <FileName>Models\Product.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.RegisterViewModel" Collapsed="true">
-    <Position X="5.75" Y="6.5" Width="1.5" />
+    <Position X="0.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAAIAA=</HashCode>
       <FileName>Models\RegisterViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Models.ResetPasswordViewModel" Collapsed="true">
-    <Position X="7.5" Y="6.5" Width="1.5" />
+    <Position X="2.25" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAABAAAAAAAAAAAAAAAAAAAAABIAA=</HashCode>
       <FileName>Models\ResetPasswordViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Services.CartService" Collapsed="true">
-    <Position X="0.5" Y="2.5" Width="1.5" />
+    <Position X="2.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAIAQABABBAAAAAAAAEAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <HashCode>AAUEAIAQABABAAAgAAAAAEAABAAAAAAAAAAIAAAAAEA=</HashCode>
       <FileName>Services\CartService.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Services.CurrencyService" Collapsed="true">
-    <Position X="2.25" Y="3.5" Width="1.5" />
+    <Position X="7.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Services\CurrencyService.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="GameStore.Services.DefaultPriceStrategy" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\DefaultPriceStrategy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GameStore.Services.DiscountPriceStrategy" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\DiscountPriceStrategy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
   <Class Name="GameStore.Services.EmailService" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="12.75" Y="3.5" Width="1.5" />
+    <Position X="5.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAEAAAEAAAAAAAAQAAAAg=</HashCode>
       <FileName>Services\EmailService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GameStore.Services.OrderFacade" Collapsed="true">
+    <Position X="5.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQBAIAAAAAAAAwIAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Services\OrderFacade.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Services.VipPriceStrategy" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\VipPriceStrategy.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -443,42 +495,49 @@
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Views.Admin.ManageRolesModel" Collapsed="true">
-    <Position X="5.75" Y="5.5" Width="1.5" />
+    <Position X="14.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>Views\Admin\ManageRoles.cshtml.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Views.Collection.DeleteModel" Collapsed="true">
-    <Position X="4" Y="3.5" Width="1.5" />
+    <Position X="11" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>Views\Collection\Delete.cshtml.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Views.Collection.EditModel" Collapsed="true">
-    <Position X="9.25" Y="3.5" Width="1.5" />
+    <Position X="2.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>Views\Collection\Edit.cshtml.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStore.Views.Shared.Components.Cart.CartModel" Collapsed="true">
-    <Position X="14.5" Y="1.5" Width="1.5" />
+    <Position X="0.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>Views\Shared\Components\Cart\Default.cshtml.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="GameStore.Services.IEmailService" Collapsed="true">
-    <Position X="7.5" Y="7.5" Width="1.5" />
+  <Interface Name="GameStore.Services.Interfaces.IEmailService" Collapsed="true">
+    <Position X="4" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
-      <FileName>Services\IEmailService.cs</FileName>
+      <FileName>Services\Interfaces\IEmailService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GameStore.Services.Interfaces.IPriceStrategy" Collapsed="true">
+    <Position X="5.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Interfaces\IPriceStrategy.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="GameStore.Models.Platform" Collapsed="true">
-    <Position X="9.25" Y="7.5" Width="1.5" />
+    <Position X="7.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAAEAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
       <FileName>Models\Platform.cs</FileName>
