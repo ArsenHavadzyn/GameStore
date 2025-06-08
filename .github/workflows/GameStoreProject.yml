@@ -44,8 +44,7 @@ jobs:
     - name: Azure Login
       uses: azure/login@v2
       with:
-        auth-type: OPENID_CONNECT
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        auth-type: IDENTITY
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v2
       with:
