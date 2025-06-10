@@ -10,6 +10,7 @@ namespace GameStore.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public DbSet<Product> Products { get; set; }
@@ -46,6 +47,12 @@ namespace GameStore.Data
                 .HasOne(oi => oi.Order)
                 .WithMany(o => o.OrderItems)
                 .HasForeignKey(oi => oi.OrderId);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Product)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(l => new { l.LoginProvider, l.ProviderKey });
             modelBuilder.Entity<IdentityUserRole<string>>().HasKey(r => new { r.UserId, r.RoleId });

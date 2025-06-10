@@ -33,14 +33,12 @@ public class AccountController : Controller
     {
         return RedirectToAction("PersonalCabinet", "Account");
     }
-
     // GET: /Account/Register
     [HttpGet]
     public IActionResult Register()
     {
         return View();
     }
-
     // POST: /Account/Register
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -66,14 +64,12 @@ public class AccountController : Controller
 
         return View(model);
     }
-
     // GET: /Account/Login
     [HttpGet]
     public IActionResult Login()
     {
         return View();
     }
-
     // POST: /Account/Login
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -93,7 +89,6 @@ public class AccountController : Controller
 
         return View(model);
     }
-
     // POST: /Account/Logout
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -102,20 +97,17 @@ public class AccountController : Controller
         await _signInManager.SignOutAsync();
         return RedirectToAction("Index", "Home");
     }
-
     // GET: /Account/AccessDenied
     [HttpGet]
     public IActionResult AccessDenied()
     {
         return View();
     }
-
     [HttpGet]
     public IActionResult ForgotPassword()
     {
         return View();
     }
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
@@ -139,13 +131,10 @@ public class AccountController : Controller
 
         return View(model);
     }
-
-
     public IActionResult ForgotPasswordConfirmation()
     {
         return View();
     }
-
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> ResetPassword()
@@ -166,9 +155,6 @@ public class AccountController : Controller
 
         return View(model);
     }
-
-
-
     [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -198,14 +184,11 @@ public class AccountController : Controller
 
         return View(model);
     }
-
-
     [HttpGet]
     public IActionResult ResetPasswordConfirmation()
     {
         return View();
     }
-
     [Authorize]
     public async Task<IActionResult> PersonalCabinet()
     {
@@ -241,8 +224,6 @@ public class AccountController : Controller
 
         return View(model);
     }
-
-
     [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -298,9 +279,6 @@ public class AccountController : Controller
 
         return View(model);
     }
-
-
-
     public async Task<IActionResult> CreateAdmin()
     {
         var adminEmail = "admin@gamestore.com";
@@ -325,6 +303,4 @@ public class AccountController : Controller
 
         return Content("Адмін створений!");
     }
-
-
 }

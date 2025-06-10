@@ -16,7 +16,8 @@ namespace GameStore.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> IndexAsync(string searchQuery, string genre, string price, string publisher, string platform, string sortOrder)
+        public async Task<IActionResult> IndexAsync(string searchQuery, string genre,
+            string price, string publisher, string platform, string sortOrder)
         {
             var products = _context.Products.Include(p => p.Genre).Where(p => !p.IsDLC).AsQueryable();
 
@@ -96,7 +97,6 @@ namespace GameStore.Controllers
 
             return View(product);
         }
-
         public async Task<IActionResult> Collection(int id)
         {
             var collection = await _context.Collections

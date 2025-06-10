@@ -17,7 +17,8 @@ namespace GameStore.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailService _emailService;
 
-        public OrderController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailService emailService)
+        public OrderController(ApplicationDbContext context, 
+            UserManager<ApplicationUser> userManager, IEmailService emailService)
         {
             _context = context;
             _userManager = userManager;
@@ -82,8 +83,6 @@ namespace GameStore.Controllers
 
             return View(order);
         }
-
-
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -164,6 +163,5 @@ namespace GameStore.Controllers
 
             return View(orders);
         }
-
     }
 }

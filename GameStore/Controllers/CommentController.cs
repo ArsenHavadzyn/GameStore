@@ -12,7 +12,8 @@ namespace GameStore.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CommentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CommentController(ApplicationDbContext context, 
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
