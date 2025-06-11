@@ -9,9 +9,7 @@ using GameStore.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// todo 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection").Replace("|DataDirectory|",
-                Path.Combine(Environment.ProcessPath, "App_Data"))
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));

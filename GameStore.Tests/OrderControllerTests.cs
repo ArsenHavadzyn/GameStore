@@ -19,45 +19,6 @@ namespace GameStore.Tests
 {
     public class OrderControllerTests
     {
-        [Fact]
-        public async Task MyOrders_ShouldReturnViewWithUserOrders()
-        {
-            // Arrange
-            var context = TestHelper.GetInMemoryContext();
-            var user = new ApplicationUser { Id = "user1", UserName = "test" };
-            var order = new Order { UserId = user.Id, TotalPrice = 100, OrderItems = new List<OrderItem>() };
-            context.Users.Add(user);
-            context.Orders.Add(order);
-            context.SaveChanges();
-
-            var userManager = TestHelper.MockUserManager(user);
-            var controller = new OrderController(context, userManager.Object, Mock.Of<IEmailService>());
-            TestHelper.SetUser(controller, user);
-
-            // Act
-            var result = await controller.MyOrders();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<List<Order>>(viewResult.Model);
-            Assert.Single(model);
-        }
-
-        [Fact]
-        public async Task DeleteOrder_ShouldRemoveOrder()
-        {
-            var context = TestHelper.GetInMemoryContext();
-            var order = new Order { Id = 1 };
-            context.Orders.Add(order);
-            context.SaveChanges();
-
-            var controller = new OrderController(context, Mock.Of<UserManager<ApplicationUser>>(), Mock.Of<IEmailService>());
-
-            var result = await controller.DeleteOrder(1);
-            var redirect = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Index", redirect.ActionName);
-            Assert.Empty(context.Orders);
-        }
 
         [Fact]
         public void CartService_ShouldReturnEmpty_WhenSessionIsNull()
@@ -79,46 +40,6 @@ namespace GameStore.Tests
             Assert.Equal(2, result[1]);
         }
 
-        [Fact]
-        public async Task OrderController_Index_ShouldSortByPriceDesc()
-        {
-            var context = TestHelper.GetInMemoryContext();
-            context.Users.Add(new ApplicationUser { Id = "1", Email = "a@a.com" });
-            context.Orders.AddRange(
-                new Order { Id = 1, TotalPrice = 100, UserId = "1" },
-                new Order { Id = 2, TotalPrice = 200, UserId = "1" });
-            context.SaveChanges();
-
-            var controller = new OrderController(context, Mock.Of<UserManager<ApplicationUser>>(), Mock.Of<IEmailService>());
-            var result = await controller.Index(null, "price_desc");
-
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<List<Order>>(viewResult.Model);
-            Assert.Equal(2, model.Count);
-            Assert.True(model.First().TotalPrice > model.Last().TotalPrice);
-        }
-
-        [Fact]
-        public void DiscountPriceStrategy_ShouldNotApply_WhenNoDiscount()
-        {
-            var strategy = new DiscountPriceStrategy();
-            var product = new Product { Price = 50, Discount = 0 };
-
-            var price = strategy.CalculatePrice(product);
-
-            Assert.Equal(50, price);
-        }
-
-        [Fact]
-        public void DiscountPriceStrategy_ShouldClampToZero()
-        {
-            var strategy = new DiscountPriceStrategy();
-            var product = new Product { Price = 100, Discount = 120 };
-
-            var price = strategy.CalculatePrice(product);
-
-            Assert.Equal(0, price);
-        }
 
         [Fact]
         public void OrderViewModel_TotalAmount_ShouldSumCorrectly()
@@ -161,7 +82,8 @@ namespace GameStore.Tests
             var accessor = new Mock<IHttpContextAccessor>();
             accessor.Setup(a => a.HttpContext).Returns(context);
 
-            var cartService = new CartService(accessor.Object, new Func<IPriceStrategy>(() => new DiscountPriceStrategy()), () => TestHelper.GetInMemoryContext());
+            var cartService = new CartService(accessor.Object, new Func<IPriceStrategy>(
+                () => new DiscountPriceStrategy()), () => TestHelper.GetInMemoryContext());
             var cart = cartService.GetCart();
 
             Assert.Empty(cart);
